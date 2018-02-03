@@ -1,29 +1,53 @@
 package main
 
-import(
-	"fmt"
-	"time"
+import (
+	"log"
+	"net/http"
+
+	"gopkg.in/oauth2.v3/errors"
+	"gopkg.in/oauth2.v3/manage"
+	"gopkg.in/oauth2.v3/models"
+	"gopkg.in/oauth2.v3/server"
+	"gopkg.in/oauth2.v3/store"
 )
 
-var now = time.Now()
-var election = time.Date(2016, time.November, 8, 0, 0, 0, 0, time.UTC)
 func main() {
-	//get duration between election date and now
-	tillElection := election.Sub(now)
-	//get duration in nanoseconds
-	toNanoseconds := tillElection.Nanoseconds()
-	//calculate hours from toNanoseconds
-	hours := toNanoseconds/3600000000000
-	remainder := toNanoseconds%3600000000000
-	//derive minutes from remainder of hours
-	minutes := remainder/60000000000
-	remainder = remainder%60000000000
-	//derive seconds from remainder of minutes
-	seconds := remainder/1000000000 
-	//calculate days and get hours left from remainder
-	days := hours/24
-	hoursLeft := hours%24
+	manager := manage.NewDefaultManager()
+	// token memory store
+	manager.MustTokenStorage(store.NewMemoryTokenStore())
 
-	fmt.Printf("\nHow long until the 2016 U.S. Presidential election?\n\n%v Days %v Hours %v Minutes %v Seconds\n\n", days, hoursLeft, minutes, seconds)
+	// client memory store
+	clientStore := store.NewClientStore()
+	clientStore.Set("000000", &models.Client{
+		ID:     "000000",
+		Secret: "999999",
+		Domain: "http://localhost",
+	})
+	manager.MapClientStorage(clientStore)
 
+	srv := server.NewDefaultServer(manager)
+	srv.SetAllowGetAccessRequest(true)
+	srv.SetClientInfoHandler(server.ClientFormHandler)
+
+	srv.SetInternalErrorHandler(func(err error) (re *errors.Response) {
+		log.Println("Internal Error:", err.Error())
+		return
+	})
+
+	srv.SetResponseErrorHandler(func(re *errors.Response) {
+		log.Println("Response Error:", re.Error.Error())
+	})
+
+	http.HandleFunc("/authorize", func(w http.ResponseWriter, r *http.Request) {
+		err := srv.HandleAuthorizeRequest(w, r)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
+	})
+
+	http.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
+		srv.HandleTokenRequest(w, r)
+	})
+
+	log.Fatal(http.ListenAndServe(":9096", nil))
 }

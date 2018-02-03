@@ -6,6 +6,8 @@ WORKDIR /app
 
 ADD . /app
 
+RUN bash get.sh
+
 RUN go build ./app.go
 
 CMD ["./app"]
