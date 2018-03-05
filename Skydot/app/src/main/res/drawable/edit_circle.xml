@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <item>
+                <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+                    <corners android:radius="50dp" />
+                    <stroke android:color="@color/off_white" android:width="2dip"/>
+                    <solid android:color="@color/darkGrey"/>
+                </shape>
+            </item>
+            <item>
+                <bitmap android:gravity="center"
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip"
+                    android:paddingTop="15dip"
+                    android:paddingBottom="15dip"
+                    android:src="@drawable/ic_create_white_18dp" />
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_focused="true">
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <item>
+                <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+                    <corners android:radius="50dp" />
+                    <stroke android:color="@color/veryDarkGrey" android:width="2dip"/>
+                    <solid android:color="@color/black"/>
+                </shape>
+            </item>
+            <item>
+                <bitmap android:gravity="center"
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip"
+                    android:paddingTop="15dip"
+                    android:paddingBottom="15dip"
+                    android:src="@drawable/ic_create_white_18dp" />
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_pressed="false">
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <item>
+                <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+                    <corners android:radius="50dp" />
+                    <stroke android:color="@color/veryDarkGrey" android:width="2dip"/>
+                    <solid android:color="@color/black"/>
+                </shape>
+            </item>
+            <item>
+                <bitmap android:gravity="center"
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip"
+                    android:paddingTop="15dip"
+                    android:paddingBottom="15dip"
+                    android:src="@drawable/ic_create_white_18dp" />
+            </item>
+        </layer-list>
+    </item>
+</selector>
