@@ -12,9 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class JsonUtil {
-	
+
 	private static final String MESSAGE = "message";
-	
+
 	static final ObjectMapper objectMapper = new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
 	static final JsonFactory factory = objectMapper.getFactory();
@@ -41,13 +41,13 @@ public class JsonUtil {
 	public static String makeMessage(String message) throws Exception {
 		return makeJson(MESSAGE, message);
 	}
-	
+
 	public static String makeJson(String key, Object value) throws Exception {
 		HashMap<String, Object> message = new HashMap<String, Object>();
 		message.put(key, value);
 		return stringify(message);
 	}
-	
+
 	public static String errorJson(String message) throws Exception {
 		return errorJson(null, message);
 	}
