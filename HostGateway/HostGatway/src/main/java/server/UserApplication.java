@@ -73,7 +73,7 @@ public class UserApplication {
 
 	@GET
 	@Path(ACCOUNT_SUMMARY)
-	public String accountSummary(@PathParam(USERID) int userid) {
+	public String accountSummary(@PathParam(USERID) String userid) {
 		try {
 			List<Account> accounts = UserDatabaseUtil.getAccountSummary(userid);
 			if (accounts == null) {
@@ -87,7 +87,7 @@ public class UserApplication {
 
 	@GET
 	@Path(ACCOUNT_DETAILS)
-	public String accountDetails(@PathParam(USERID) int userid, @PathParam(ACCOUNTID) int accountid) {
+	public String accountDetails(@PathParam(USERID) String userid, @PathParam(ACCOUNTID) int accountid) {
 		try {
 			Account account = UserDatabaseUtil.getAccount(userid, accountid);
 			if (account == null) {

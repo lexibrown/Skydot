@@ -5,7 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import data.Account;
 import data.Profile;
+import utils.UserDatabaseUtil;
 
 public class ProfileDatabaseTest {
 
@@ -28,6 +30,37 @@ public class ProfileDatabaseTest {
 
 		assertFalse(HibernateDatabaseProfileManager.getDefault().profileExists("user123"));
 	}
+
+	@Test
+	public void testOneAccount() {
+		Account a = new Account();
+		a.setId(1234);
+
+		assertTrue(HibernateDatabaseAccountManager.getDefault().setupTable());
+		assertTrue(HibernateDatabaseTransactionManager.getDefault().setupTable());
+
+		assertTrue(HibernateDatabaseAccountManager.getDefault().add(a));
+
+		System.out.println(
+				HibernateDatabaseAccountManager.getDefault().getAccountWithId(1234).getId());
+		System.out.println(a.getId());
+
+		assertTrue(HibernateDatabaseAccountManager.getDefault().getAccountWithId(1234).getClass()
+				.equals(a.getClass()));
+
+		assertTrue(HibernateDatabaseAccountManager.getDefault().delete(a));
+
+		assertFalse(HibernateDatabaseAccountManager.getDefault().accountExists(1234));
+	}
+	
+	@Test
+	public void setUpSomePofiles() {
+		String userid = "4500432143214321";
+		String password = "Password1";
+
+		assertTrue(UserDatabaseUtil.addUser(userid, password));
+	}
+
 	/*
 	
 	@Test

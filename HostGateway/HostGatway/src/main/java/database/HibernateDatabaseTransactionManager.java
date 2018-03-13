@@ -38,18 +38,14 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 	private static final String DROP_TABLE_SQL = "drop table " + TABLE_NAME + ";";
 
 	// sqlserver
-	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-			+ "(PRIMARY_KEY char(36) primary key not null, "
-			+ "ID int, ACCOUNTID int, USERID varchar(max), NAME varchar(max), DATE varchar(max), AMOUNT double);";
+//	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+//			+ "(PRIMARY_KEY char(36) primary key not null, "
+//			+ "ID int, ACCOUNTID int, USERID varchar(max), NAME varchar(max), DATE varchar(max), AMOUNT double);";
 
 	// mysql
-	// private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-	// + "(PRIMARY_KEY char(36) primary key not null, "
-	// + "ID integer, CREATOR tinytext, CREATOR_ICON integer, MADE_ON tinytext,
-	// GAME_TYPE tinytext, LOOKING_FOR tinytext, NEXT_GAME tinytext, "
-	// + "MAX_PLAYERS integer, FREQUENCY tinytext, OCCURRENCES integer, LANGUAGE
-	// tinytext, NEW_PLAYERS boolean, "
-	// + "MATURE_CONTENT boolean, DESCRIPTION tinytext);";
+	 private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+	 + "(PRIMARY_KEY char(36) primary key not null, "
+	 + "ID integer, ACCOUNTID integer, USERID tinytext, NAME tinytext, DATE tinytext, AMOUNT double);";
 
 	private static HibernateDatabaseTransactionManager manager;
 

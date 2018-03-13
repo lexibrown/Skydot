@@ -22,6 +22,9 @@ public class HibernateDatabaseAccountManager extends AbstractHibernateDatabaseMa
 	private static String SELECT_ACCOUNT_WITH_NAME = "from " + CLASS_NAME
 			+ " as account where account.userid = :userid";
 
+	private static String SELECT_ACCOUNT = "from " + CLASS_NAME
+			+ " as account where account.userid = :userid and account.id = :id";
+
 	private static String SELECT_ACCOUNT_WITH_ID = "from " + CLASS_NAME + " as account where account.id = :id";
 
 	private static String SELECT_NUMBER_ACCOUNTS = "select count (*) from " + CLASS_NAME;
@@ -37,16 +40,14 @@ public class HibernateDatabaseAccountManager extends AbstractHibernateDatabaseMa
 
 	private static final String DROP_TABLE_SQL = "drop table " + TABLE_NAME + ";";
 	// sqlserver
-	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-			+ "(PRIMARY_KEY char(36) primary key not null, id int, USERID varchar(max), NAME varchar(max), "
-			+ "TYPE varchar(max), CAD double, USD double);";
+//	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+//			+ "(PRIMARY_KEY char(36) primary key not null, ID int, USERID varchar(max), NAME varchar(max), "
+//			+ "TYPE varchar(max), CAD double, USD double);";
 
 	// mysql
-	// private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-	// + "(PRIMARY_KEY char(36) primary key not null, USERID tinytext, PASSWORD
-	// tinytext, "
-	// + "STATUS tinytext, ICON integer, BACKGROUND integer, HOSTED integer,
-	// TIER integer);";
+	 private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+	 + "(PRIMARY_KEY char(36) primary key not null, ID integer, USERID tinytext, NAME tinytext, "
+	 + "TYPE tinytext, CAD double, USD double);";
 
 	private static HibernateDatabaseAccountManager manager;
 
@@ -66,14 +67,14 @@ public class HibernateDatabaseAccountManager extends AbstractHibernateDatabaseMa
 		return manager;
 	}
 
-	public synchronized List<Account> getAccountsWithName(int userid) {
+	public synchronized List<Account> getAccountsWithName(String userid) {
 		Session session = null;
 		Transaction transaction = null;
 		try {
 			session = HibernateUtil.getCurrentSession();
 			transaction = session.beginTransaction();
 			Query query = session.createQuery(SELECT_ACCOUNT_WITH_NAME);
-			query.setParameter("userid", String.valueOf(userid));
+			query.setParameter("userid", userid);
 			@SuppressWarnings("unchecked")
 			List<Account> accounts = query.list();
 			transaction.commit();
@@ -119,14 +120,14 @@ public class HibernateDatabaseAccountManager extends AbstractHibernateDatabaseMa
 		}
 	}
 
-	public synchronized boolean accountExists(String name) {
+	public synchronized boolean accountExists(int id) {
 		Session session = null;
 		Transaction transaction = null;
 		try {
 			session = HibernateUtil.getCurrentSession();
 			transaction = session.beginTransaction();
 			Query query = session.createQuery(SELECT_ACCOUNT_WITH_NAME);
-			query.setParameter("userid", name);
+			query.setParameter("id", id);
 			@SuppressWarnings("unchecked")
 			List<Account> accounts = query.list();
 			transaction.commit();
@@ -270,8 +271,9 @@ public class HibernateDatabaseAccountManager extends AbstractHibernateDatabaseMa
 		try {
 			session = HibernateUtil.getCurrentSession();
 			transaction = session.beginTransaction();
-			Query query = session.createQuery(SELECT_ACCOUNT_WITH_NAME);
+			Query query = session.createQuery(SELECT_ACCOUNT);
 			query.setParameter("userid", account.getUserid());
+			query.setParameter("id", account.getId());
 			@SuppressWarnings("unchecked")
 			List<Account> accounts = query.list();
 
