@@ -101,14 +101,14 @@ public class Account implements Serializable {
 
 	public Map<String, Object> toMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		map.put("userid", getUserid());
 		map.put("id", getId());
 		map.put("name", getName());
 		map.put("type", getType());
 		map.put("CAD", getBalanceCAD());
 		map.put("USD", getBalanceUSD());
-		
+
 		return map;
 	}
 

@@ -1,13 +1,12 @@
 package database;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import data.Account;
 import data.Profile;
-import utils.UserDatabaseUtil;
+import utils.BankDatabaseUtil;
 
 public class ProfileDatabaseTest {
 
@@ -58,7 +57,13 @@ public class ProfileDatabaseTest {
 		String userid = "4500432143214321";
 		String password = "Password1";
 
-		assertTrue(UserDatabaseUtil.addUser(userid, password));
+		assertTrue(BankDatabaseUtil.addUser(userid, password));
+		
+		assertTrue(!BankDatabaseUtil.getAccountSummary(userid).isEmpty());
+		
+		assertTrue(BankDatabaseUtil.removeUser(userid));
+		assertTrue(BankDatabaseUtil.getAccountSummary(userid).isEmpty());
+		
 	}
 
 	/*

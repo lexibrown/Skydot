@@ -10,23 +10,14 @@ import database.HibernateDatabaseAccountManager;
 import database.HibernateDatabaseProfileManager;
 import database.HibernateDatabaseTransactionManager;
 
-public class UserDatabaseUtil {
+public class BankDatabaseUtil {
 
 	public static boolean userExists(String username) {
 		return HibernateDatabaseProfileManager.getDefault().profileExists(username);
 	}
 
 	public static boolean userExists(String username, String password) {
-		try {
-			Profile p = HibernateDatabaseProfileManager.getDefault().getProfileWithName(username);
-			if (p == null) {
-				return false;
-			}
-			return password.equals(p.getPassword());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+		return HibernateDatabaseProfileManager.getDefault().profileExists(username, password);
 	}
 
 	public static Profile getUser(String username) {
@@ -34,7 +25,7 @@ public class UserDatabaseUtil {
 	}
 
 	public static Profile getUserWithoutPassword(String username) {
-		Profile profile = HibernateDatabaseProfileManager.getDefault().getProfileWithName(username);
+		Profile profile = getUser(username);
 		if (profile == null) {
 			return null;
 		}
@@ -43,7 +34,15 @@ public class UserDatabaseUtil {
 	}
 
 	public static boolean removeUser(String username) {
-		// TODO remove all transactions and accounts
+		List<Account> accounts = getAccountSummary(username);
+		for (Account a : accounts) {
+			List<Transaction> transactions = getTransactions(a.getId());
+			for (Transaction t : transactions) {
+				HibernateDatabaseTransactionManager.getDefault().delete(t);
+			}
+			HibernateDatabaseAccountManager.getDefault().delete(a);
+		}
+		
 		return HibernateDatabaseProfileManager.getDefault().delete(username);
 	}
 
@@ -68,6 +67,44 @@ public class UserDatabaseUtil {
 
 	public static List<Transaction> getTransactions(int accountid) {
 		return HibernateDatabaseTransactionManager.getDefault().getTransactions(accountid);
+	}
+	
+	public static boolean withdraw(String userid, int accountid, double amount, String currency) {
+		Account account = getAccount(userid, accountid);
+		if (account == null) {
+			return false;
+		} else if (amount < 0.0) {
+			return false;
+		}
+		
+		if (Variables.CAD.equalsIgnoreCase(currency)) {
+			account.setBalanceCAD(account.getBalanceCAD() - amount);
+		} else if (Variables.USD.equalsIgnoreCase(currency)) {
+			account.setBalanceUSD(account.getBalanceUSD() - amount);
+		} else {
+			return false;
+		}
+		
+		return HibernateDatabaseAccountManager.getDefault().update(account);
+	}
+
+	public static boolean deposit(String userid, int accountid, double amount, String currency) {
+		Account account = getAccount(userid, accountid);
+		if (account == null) {
+			return false;
+		} else if (amount < 0.0) {
+			return false;
+		}
+		
+		if (Variables.CAD.equalsIgnoreCase(currency)) {
+			account.setBalanceCAD(account.getBalanceCAD() + amount);
+		} else if (Variables.USD.equalsIgnoreCase(currency)) {
+			account.setBalanceUSD(account.getBalanceUSD() + amount);
+		} else {
+			return false;
+		}
+		
+		return HibernateDatabaseAccountManager.getDefault().update(account);
 	}
 
 	public static boolean addUser(String username, String password) {

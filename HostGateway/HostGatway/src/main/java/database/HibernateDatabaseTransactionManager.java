@@ -1,7 +1,7 @@
 package database;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.ObjectNotFoundException;
@@ -38,14 +38,15 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 	private static final String DROP_TABLE_SQL = "drop table " + TABLE_NAME + ";";
 
 	// sqlserver
-//	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-//			+ "(PRIMARY_KEY char(36) primary key not null, "
-//			+ "ID int, ACCOUNTID int, USERID varchar(max), NAME varchar(max), DATE varchar(max), AMOUNT double);";
+	// private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+	// + "(PRIMARY_KEY char(36) primary key not null, "
+	// + "ID int, ACCOUNTID int, USERID varchar(max), NAME varchar(max), DATE
+	// varchar(max), AMOUNT double);";
 
 	// mysql
-	 private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-	 + "(PRIMARY_KEY char(36) primary key not null, "
-	 + "ID integer, ACCOUNTID integer, USERID tinytext, NAME tinytext, DATE tinytext, AMOUNT double);";
+	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+			+ "(PRIMARY_KEY char(36) primary key not null, "
+			+ "ID integer, ACCOUNTID integer, USERID tinytext, NAME tinytext, DATE tinytext, AMOUNT double);";
 
 	private static HibernateDatabaseTransactionManager manager;
 
@@ -144,14 +145,11 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 			List<data.Transaction> transactions = query.list();
 			transaction.commit();
 
-			if (transactions.isEmpty()) {
-				return null;
-			}
 			return transactions;
 		} catch (HibernateException exception) {
 			LoggerManager.current().error(this, METHOD_GET_TRANSACTION_WITH_NAME,
 					"error." + METHOD_GET_TRANSACTION_WITH_NAME, exception);
-			return null;
+			return new ArrayList<data.Transaction>();
 		} finally {
 			closeSession();
 		}

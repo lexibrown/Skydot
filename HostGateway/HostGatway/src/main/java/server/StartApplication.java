@@ -13,7 +13,7 @@ public class StartApplication extends Application {
 		final Set<Class<?>> classes = new HashSet<Class<?>>();
 		// register root resource
 
-		classes.add(UserApplication.class);
+		classes.add(AccountApplication.class);
 		classes.add(Hello.class);
 
 		return classes;

@@ -1,5 +1,6 @@
 package database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -79,15 +80,11 @@ public class HibernateDatabaseAccountManager extends AbstractHibernateDatabaseMa
 			List<Account> accounts = query.list();
 			transaction.commit();
 
-			if (accounts.isEmpty()) {
-				return null;
-			} else {
-				return accounts;
-			}
+			return accounts;
 		} catch (HibernateException exception) {
 			LoggerManager.current().error(this, METHOD_GET_ACCOUNT_WITH_NAME, "error." + METHOD_GET_ACCOUNT_WITH_NAME,
 					exception);
-			return null;
+			return new ArrayList<Account>();
 		} finally {
 			closeSession();
 		}
@@ -126,7 +123,7 @@ public class HibernateDatabaseAccountManager extends AbstractHibernateDatabaseMa
 		try {
 			session = HibernateUtil.getCurrentSession();
 			transaction = session.beginTransaction();
-			Query query = session.createQuery(SELECT_ACCOUNT_WITH_NAME);
+			Query query = session.createQuery(SELECT_ACCOUNT_WITH_ID);
 			query.setParameter("id", id);
 			@SuppressWarnings("unchecked")
 			List<Account> accounts = query.list();
