@@ -40,15 +40,16 @@ public class HibernateDatabaseAccountManager extends AbstractHibernateDatabaseMa
 	public static String OUTGOING_NAME = "outgoing msgs";
 
 	private static final String DROP_TABLE_SQL = "drop table " + TABLE_NAME + ";";
+
 	// sqlserver
-//	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-//			+ "(PRIMARY_KEY char(36) primary key not null, ID int, USERID varchar(max), NAME varchar(max), "
-//			+ "TYPE varchar(max), CAD double, USD double);";
+	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+			+ "(PRIMARY_KEY char(36) primary key not null, ID int, USERID varchar(max), NAME varchar(max), "
+			+ "TYPE varchar(max), CAD float, USD float);";
 
 	// mysql
-	 private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-	 + "(PRIMARY_KEY char(36) primary key not null, ID integer, USERID tinytext, NAME tinytext, "
-	 + "TYPE tinytext, CAD double, USD double);";
+//	 private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+//	 + "(PRIMARY_KEY char(36) primary key not null, ID integer, USERID tinytext, NAME tinytext, "
+//	 + "TYPE tinytext, CAD double, USD double);";
 
 	private static HibernateDatabaseAccountManager manager;
 

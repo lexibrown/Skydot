@@ -11,8 +11,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "TRANSACTION")
-public class Transaction implements Serializable {
+@Table(name = "HISTORY")
+public class History implements Serializable {
 
 	private static final long serialVersionUID = 736759228769686073L;
 
@@ -40,7 +40,7 @@ public class Transaction implements Serializable {
 	@Column(name = "AMOUNT")
 	private double amount;
 
-	public Transaction() {
+	public History() {
 		this.id = 0;
 		this.accountid = 0;
 		this.userid = null;

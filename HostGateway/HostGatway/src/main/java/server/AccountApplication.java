@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import data.Account;
-import data.Transaction;
+import data.History;
 import utils.JsonUtil;
 import utils.BankDatabaseUtil;
 
@@ -102,7 +102,7 @@ public class AccountApplication {
 
 			Map<String, Object> accountMap = account.toMap();
 
-			List<Transaction> transations = BankDatabaseUtil.getTransactions(account.getId());
+			List<History> transations = BankDatabaseUtil.getTransactions(account.getId());
 			accountMap.put(TRANSACTIONS, JsonUtil.stringify(transations));
 
 			return JsonUtil.stringify(accountMap);

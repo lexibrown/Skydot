@@ -1,11 +1,13 @@
 package utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import data.Account;
 import data.Profile;
-import data.Transaction;
+import data.History;
 import database.HibernateDatabaseAccountManager;
 import database.HibernateDatabaseProfileManager;
 import database.HibernateDatabaseTransactionManager;
@@ -36,13 +38,13 @@ public class BankDatabaseUtil {
 	public static boolean removeUser(String username) {
 		List<Account> accounts = getAccountSummary(username);
 		for (Account a : accounts) {
-			List<Transaction> transactions = getTransactions(a.getId());
-			for (Transaction t : transactions) {
+			List<History> transactions = getTransactions(a.getId());
+			for (History t : transactions) {
 				HibernateDatabaseTransactionManager.getDefault().delete(t);
 			}
 			HibernateDatabaseAccountManager.getDefault().delete(a);
 		}
-		
+
 		return HibernateDatabaseProfileManager.getDefault().delete(username);
 	}
 
@@ -65,10 +67,10 @@ public class BankDatabaseUtil {
 		return null;
 	}
 
-	public static List<Transaction> getTransactions(int accountid) {
+	public static List<History> getTransactions(int accountid) {
 		return HibernateDatabaseTransactionManager.getDefault().getTransactions(accountid);
 	}
-	
+
 	public static boolean withdraw(String userid, int accountid, double amount, String currency) {
 		Account account = getAccount(userid, accountid);
 		if (account == null) {
@@ -76,7 +78,7 @@ public class BankDatabaseUtil {
 		} else if (amount < 0.0) {
 			return false;
 		}
-		
+
 		if (Variables.CAD.equalsIgnoreCase(currency)) {
 			account.setBalanceCAD(account.getBalanceCAD() - amount);
 		} else if (Variables.USD.equalsIgnoreCase(currency)) {
@@ -84,8 +86,25 @@ public class BankDatabaseUtil {
 		} else {
 			return false;
 		}
-		
-		return HibernateDatabaseAccountManager.getDefault().update(account);
+
+		if (!HibernateDatabaseAccountManager.getDefault().update(account)) {
+			return false;
+		}
+
+		History history = new History();
+		history.setAccountid(accountid);
+		history.setAmount(amount);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		history.setDate(format.format(new Date()));
+		history.setName("A Withdrawal");
+		history.setUserid(userid);
+
+		int numTransactions = getTransactions(accountid).size();
+		history.setId(numTransactions + 1);
+
+		HibernateDatabaseTransactionManager.getDefault().add(history);
+
+		return true;
 	}
 
 	public static boolean deposit(String userid, int accountid, double amount, String currency) {
@@ -95,7 +114,7 @@ public class BankDatabaseUtil {
 		} else if (amount < 0.0) {
 			return false;
 		}
-		
+
 		if (Variables.CAD.equalsIgnoreCase(currency)) {
 			account.setBalanceCAD(account.getBalanceCAD() + amount);
 		} else if (Variables.USD.equalsIgnoreCase(currency)) {
@@ -103,8 +122,25 @@ public class BankDatabaseUtil {
 		} else {
 			return false;
 		}
-		
-		return HibernateDatabaseAccountManager.getDefault().update(account);
+
+		if (!HibernateDatabaseAccountManager.getDefault().update(account)) {
+			return false;
+		}
+
+		History history = new History();
+		history.setAccountid(accountid);
+		history.setAmount(amount);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		history.setDate(format.format(new Date()));
+		history.setName("A Deposit");
+		history.setUserid(userid);
+
+		int numTransactions = getTransactions(accountid).size();
+		history.setId(numTransactions + 1);
+
+		HibernateDatabaseTransactionManager.getDefault().add(history);
+
+		return true;
 	}
 
 	public static boolean addUser(String username, String password) {

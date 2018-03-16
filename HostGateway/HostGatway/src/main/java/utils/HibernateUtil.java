@@ -45,35 +45,33 @@ public class HibernateUtil {
 				Configuration configuration = new Configuration();
 				// Should read from file
 
-				 configuration.setProperty("hibernate.connection.driver_class",
-				 "com.mysql.jdbc.Driver");
-//				configuration.setProperty("hibernate.connection.driver_class",
-//						"com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//				 configuration.setProperty("hibernate.connection.driver_class",
+//				 "com.mysql.jdbc.Driver");
+				configuration.setProperty("hibernate.connection.driver_class",
+						"com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
 				// local database
-				 configuration.setProperty("hibernate.connection.url",
-				 "jdbc:mysql://localhost:3306/" + DATABASE_NAME +
-				 "?autoReconnect=true");
+//				 configuration.setProperty("hibernate.connection.url",
+//				 "jdbc:mysql://localhost:3306/" + DATABASE_NAME +
+//				 "?autoReconnect=true");
 
 				// azure database
-//				configuration.setProperty("hibernate.connection.url",
-//						"jdbc:sqlserver://skydot-bank.database.windows.net:1433;database=skydot-bank-database;"
-//								+ "user=sysadmin@skydot-bank;password=P@ssword1;encrypt=true;"
-//								+ "trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
-				//jdbc:sqlserver://skydot-bank.database.windows.net:1433;database=skydot-bank-database;user=sysadmin@skydot-bank;
-					//password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+				configuration.setProperty("hibernate.connection.url",
+						"jdbc:sqlserver://skydot-bank.database.windows.net:1433;database=skydot-bank-database;"
+								+ "user=sysadmin@skydot-bank;password=P@ssw0rd1;encrypt=true;"
+								+ "trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
 				
 					configuration.setProperty("show_sql", "true");
 
-				 configuration.setProperty("hibernate.dialect",
-				 "org.hibernate.dialect.MySQLDialect");
-//				configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLServerDialect");
+//				 configuration.setProperty("hibernate.dialect",
+//				 "org.hibernate.dialect.MySQLDialect");
+				configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLServerDialect");
 
 				// local login
-				 configuration.setProperty("hibernate.connection.password",
-				 "social");
-				 configuration.setProperty("hibernate.connection.username",
-				 "social");
+//				 configuration.setProperty("hibernate.connection.password",
+//				 "social");
+//				 configuration.setProperty("hibernate.connection.username",
+//				 "social");
 
 				// azure login
 				// configuration.setProperty("hibernate.connection.username",

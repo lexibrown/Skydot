@@ -14,6 +14,6 @@
 -->
 <mapping class="data.Account"/>
 <mapping class="data.Profile"/>
-<mapping class="data.Transaction"/>
+<mapping class="data.History"/>
 </session-factory>
 </hibernate-configuration>

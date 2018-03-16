@@ -9,21 +9,22 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import data.History;
 import utils.HibernateUtil;
 import utils.LoggerManager;
 
 public class HibernateDatabaseTransactionManager extends AbstractHibernateDatabaseManager {
 
-	private static String TABLE_NAME = "TRANSACTION";
-	private static String CLASS_NAME = "Transaction";
+	private static String TABLE_NAME = "HISTORY";
+	private static String CLASS_NAME = "History";
 
-	private static String SELECT_ALL_TRANSACTIONS = "from " + CLASS_NAME + " as transaction";
+	private static String SELECT_ALL_TRANSACTIONS = "from " + CLASS_NAME + " as history";
 
 	private static String SELECT_TRANSACTION_WITH_ID = "from " + CLASS_NAME
-			+ " as transaction where transaction.id = :id";
+			+ " as history where history.id = :id";
 
 	private static String SELECT_TRANSACTION_WITH_ACCOUNT_ID = "from " + CLASS_NAME
-			+ " as transaction where transaction.accountid = :accountid";
+			+ " as history where history.accountid = :accountid";
 
 	private static String SELECT_NUMBER_TRANSACTIONS = "select count (*) from " + CLASS_NAME;
 
@@ -38,15 +39,15 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 	private static final String DROP_TABLE_SQL = "drop table " + TABLE_NAME + ";";
 
 	// sqlserver
-	// private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-	// + "(PRIMARY_KEY char(36) primary key not null, "
-	// + "ID int, ACCOUNTID int, USERID varchar(max), NAME varchar(max), DATE
-	// varchar(max), AMOUNT double);";
-
-	// mysql
 	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
 			+ "(PRIMARY_KEY char(36) primary key not null, "
-			+ "ID integer, ACCOUNTID integer, USERID tinytext, NAME tinytext, DATE tinytext, AMOUNT double);";
+			+ "ID int, ACCOUNTID int, USERID varchar(max), NAME varchar(max), DATE varchar(max), AMOUNT float);";
+
+	// mysql
+	// private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+	// + "(PRIMARY_KEY char(36) primary key not null, "
+	// + "ID integer, ACCOUNTID integer, USERID tinytext, NAME tinytext, DATE
+	// tinytext, AMOUNT double);";
 
 	private static HibernateDatabaseTransactionManager manager;
 
@@ -75,7 +76,7 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 			Query query = session.createQuery(SELECT_TRANSACTION_WITH_ID);
 			query.setParameter("id", id);
 			@SuppressWarnings("unchecked")
-			List<data.Transaction> transactions = query.list();
+			List<History> transactions = query.list();
 			transaction.commit();
 
 			if (transactions.isEmpty()) {
@@ -92,7 +93,7 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 		}
 	}
 
-	public synchronized data.Transaction getTransactionWithID(int id) {
+	public synchronized History getTransactionWithID(int id) {
 		Session session = null;
 		Transaction transaction = null;
 		try {
@@ -101,13 +102,13 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 			Query query = session.createQuery(SELECT_TRANSACTION_WITH_ID);
 			query.setParameter("id", id);
 			@SuppressWarnings("unchecked")
-			List<data.Transaction> transactions = query.list();
+			List<History> transactions = query.list();
 			transaction.commit();
 
 			if (transactions.isEmpty()) {
 				return null;
 			} else {
-				data.Transaction trans = transactions.get(0);
+				History trans = transactions.get(0);
 				return trans;
 			}
 		} catch (HibernateException exception) {
@@ -119,11 +120,11 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 		}
 	}
 
-	public synchronized data.Transaction getTransactionById(String id) {
+	public synchronized History getTransactionById(String id) {
 		Session session = null;
 		try {
 			session = HibernateUtil.getCurrentSession();
-			data.Transaction transaction = (data.Transaction) session.load(data.Transaction.class, id);
+			History transaction = (History) session.load(History.class, id);
 			return transaction;
 		} catch (HibernateException exception) {
 			LoggerManager.current().error(this, Messages.METHOD_GET_CLIENT_BY_ID, "error.getClientById", exception);
@@ -133,7 +134,7 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 		}
 	}
 
-	public synchronized List<data.Transaction> getTransactions(int accountid) {
+	public synchronized List<History> getTransactions(int accountid) {
 		Session session = null;
 		Transaction transaction = null;
 		try {
@@ -142,29 +143,29 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 			Query query = session.createQuery(SELECT_TRANSACTION_WITH_ACCOUNT_ID);
 			query.setParameter("accountid", accountid);
 			@SuppressWarnings("unchecked")
-			List<data.Transaction> transactions = query.list();
+			List<History> transactions = query.list();
 			transaction.commit();
 
 			return transactions;
 		} catch (HibernateException exception) {
 			LoggerManager.current().error(this, METHOD_GET_TRANSACTION_WITH_NAME,
 					"error." + METHOD_GET_TRANSACTION_WITH_NAME, exception);
-			return new ArrayList<data.Transaction>();
+			return new ArrayList<History>();
 		} finally {
 			closeSession();
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized List<data.Transaction> getAllTransactions() {
+	public synchronized List<History> getAllTransactions() {
 
 		Session session = null;
-		List<data.Transaction> errorResult = null;
+		List<History> errorResult = null;
 
 		try {
 			session = HibernateUtil.getCurrentSession();
 			Query query = session.createQuery(SELECT_ALL_TRANSACTIONS);
-			List<data.Transaction> transactions = query.list();
+			List<History> transactions = query.list();
 			return transactions;
 		} catch (ObjectNotFoundException exception) {
 			LoggerManager.current().error(this, METHOD_GET_ALL, Messages.OBJECT_NOT_FOUND_FAILED, exception);
@@ -204,7 +205,7 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 		}
 	}
 
-	public synchronized boolean delete(data.Transaction trans) {
+	public synchronized boolean delete(History trans) {
 		Session session = null;
 		Transaction transaction = null;
 		boolean errorResult = false;
@@ -234,7 +235,7 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 		boolean errorResult = false;
 
 		try {
-			data.Transaction toDelete = getTransactionWithID(id);
+			History toDelete = getTransactionWithID(id);
 			if (toDelete == null) {
 				return false;
 			}
@@ -259,7 +260,7 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 	public synchronized boolean add(Object object) {
 		Transaction transaction = null;
 		Session session = null;
-		data.Transaction trans = (data.Transaction) object;
+		History trans = (History) object;
 
 		try {
 			session = HibernateUtil.getCurrentSession();
@@ -267,7 +268,7 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 			Query query = session.createQuery(SELECT_TRANSACTION_WITH_ID);
 			query.setParameter("id", trans.getId());
 			@SuppressWarnings("unchecked")
-			List<data.Transaction> transactions = query.list();
+			List<History> transactions = query.list();
 
 			if (!transactions.isEmpty()) {
 				return false;
@@ -287,7 +288,7 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 		}
 	}
 
-	public synchronized boolean update(data.Transaction transaction) {
+	public synchronized boolean update(History transaction) {
 		boolean result = super.update(transaction);
 		return result;
 	}

@@ -35,13 +35,13 @@ public class HibernateDatabaseProfileManager extends AbstractHibernateDatabaseMa
 	private static final String DROP_TABLE_SQL = "drop table " + TABLE_NAME + ";";
 
 	// sqlserver
-//	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
-//			+ "(PRIMARY_KEY char(36) primary key not null, " + "USERID varchar(max), PASSWORD varchar(max));";
+	private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME
+			+ "(PRIMARY_KEY char(36) primary key not null, " + "USERID varchar(max), PASSWORD varchar(max));";
 
 	// mysql
-	 private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME +
-	 "(PRIMARY_KEY char(36) primary key not null, "
-	 + "USERID tinytext, PASSWORD tinytext);";
+//	 private static String CREATE_TABLE_SQL = "create table " + TABLE_NAME +
+//	 "(PRIMARY_KEY char(36) primary key not null, "
+//	 + "USERID tinytext, PASSWORD tinytext);";
 
 	private static HibernateDatabaseProfileManager manager;
 
