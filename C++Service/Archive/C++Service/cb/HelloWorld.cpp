@@ -172,7 +172,7 @@ void handle_del(http_request request)
 
 int main()
 {
-   http_listener listener(U("http://localhost:8080/restdemo"));
+   http_listener listener(U("http://0.0.0.0:8088/restdemo"));
 
    listener.support(methods::GET,  handle_get);
    listener.support(methods::POST, handle_post);

@@ -1,0 +1,3 @@
+/cb/delete/CMakeFiles/edit_cache.dir
+/cb/delete/CMakeFiles/rebuild_cache.dir
+/cb/delete/CMakeFiles/HelloWorld.dir

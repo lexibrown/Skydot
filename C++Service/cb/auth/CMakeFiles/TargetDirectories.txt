@@ -1,0 +1,3 @@
+/cb/auth/CMakeFiles/edit_cache.dir
+/cb/auth/CMakeFiles/rebuild_cache.dir
+/cb/auth/CMakeFiles/HelloWorld.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -O3 -DNDEBUG   CMakeFiles/HelloWorld.dir/HelloWorld.cpp.o  -o HelloWorld -rdynamic -lboost_system -lcrypto -lssl -lpthread -lcpprest /casablanca/Release/build/Binaries/libcommon_utilities.a 

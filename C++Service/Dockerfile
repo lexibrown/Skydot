@@ -20,7 +20,7 @@ CMD ["/bin/bash"]
 # make
 # ./HelloWorld &
 #
-# curl -H "Content-Type: application/json" -X PUT http://localhost:8080/restdemo -d '{"one" : "100", "two" : "200"}'
+# curl -v -H "Content-Type: application/json" -X PUT http://localhost:8080/restdemo -d '{"one" : "100", "two" : "200"}'
 # curl http://localhost:8080/restdemo
 #
 # exit
