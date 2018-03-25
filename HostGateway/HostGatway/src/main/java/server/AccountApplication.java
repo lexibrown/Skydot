@@ -22,25 +22,34 @@ public class AccountApplication {
 
 	public static final String SERVICE = "HOST";
 
-	public static final String ACCOUNT_SUMMARY = "{userid}";
-	public static final String ACCOUNT_DETAILS = "{userid}/{accountid}";
+	public static final String ACCOUNT_SUMMARY = "{user_id}";
+	public static final String ACCOUNT_DETAILS = "{user_id}/{account_id}";
 
 	public static final String CREATE = "create";
 	public static final String DELETE = "delete";
 	public static final String VERIFY = "verify";
 
-	public static final String WITHDRAW = "withdraw/{userid}/{accountid}/{amount}/{currency}";
-	public static final String DEPOSIT = "deposit/{userid}/{accountid}/{amount}/{currency}";
+	public static final String TRANSFER = "transfer";
+	public static final String BILL_PAYMENT = "bill";
+	public static final String BILL_PAYEE = "bill/payee";
 
-	public static final String ACCOUNTID = "accountid";
-	public static final String USERID = "userid";
+	public static final String WITHDRAW = "withdraw/{user_id}/{account_id}/{amount}/{currency}";
+	public static final String DEPOSIT = "deposit/{user_id}/{account_id}/{amount}/{currency}";
+
+	public static final String ACCOUNTID = "account_id";
+	public static final String USERID = "user_id";
 	public static final String PASSWORD = "password";
 	public static final String AMOUNT = "amount";
 	public static final String CURRENCY = "currency";
+	public static final String TO = "to_account";
+	public static final String FROM = "from_account";
+	public static final String PAYEE = "payee";
+	public static final String SEARCH = "search";
 
 	public static final String SUCCESS = "success";
 	public static final String ACCOUNTS = "accounts";
 	public static final String TRANSACTIONS = "transactions";
+	public static final String PAYEES = "payees";
 	public static final String MESSAGE = "message";
 
 	@GET
@@ -51,7 +60,7 @@ public class AccountApplication {
 
 	/**
 	 * Validate that the userid and password are correct and authorize the user
-	 * { userid: "username1", password: "pass12345", languageCode: "en" }
+	 * { user_id: "username1", password: "pass12345", languageCode: "en" }
 	 * 
 	 * @return Success if user is valid
 	 */
@@ -107,6 +116,103 @@ public class AccountApplication {
 
 			return JsonUtil.stringify(accountMap);
 		} catch (Exception e) {
+			return JsonUtil.fail(e);
+		}
+	}
+
+	@POST
+	@Path(TRANSFER)
+	public String transfer(HashMap<String, Object> params) {
+		try {
+			if (!params.containsKey(USERID)) {
+				return JsonUtil.errorJson(SERVICE + "-1000", "No username provided.");
+			} else if (!params.containsKey(TO)) {
+				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+			} else if (!params.containsKey(FROM)) {
+				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+			} else if (!params.containsKey(AMOUNT)) {
+				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+			} else if (!params.containsKey(CURRENCY)) {
+				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+			}
+
+			String userid = params.get(USERID).toString();
+			int to_account = Integer.parseInt(params.get(TO).toString());
+			int from_account = Integer.parseInt(params.get(FROM).toString());
+			double amount = Double.parseDouble(params.get(AMOUNT).toString());
+			String currency = params.get(CURRENCY).toString();
+
+			if (BankDatabaseUtil.getAccount(userid, from_account) == null) {
+				return JsonUtil.errorJson(SERVICE + "-1006", "No such account.");
+			} else if (BankDatabaseUtil.getAccount(userid, to_account) == null) {
+				return JsonUtil.errorJson(SERVICE + "-1006", "No such account.");
+			} else if (BankDatabaseUtil.makeTransfer(userid, from_account, to_account, amount, currency)) {
+				return JsonUtil.makeJson(SUCCESS, "Successfully made transfer.");
+			}
+			return JsonUtil.errorJson(SERVICE + "-1007", "Failed to make transfer.");
+		} catch (Exception e) {
+			return JsonUtil.fail(e);
+		}
+	}
+
+	@POST
+	@Path(BILL_PAYMENT)
+	public String billPayment(HashMap<String, Object> params) {
+		try {
+			if (!params.containsKey(USERID)) {
+				return JsonUtil.errorJson(SERVICE + "-1000", "No username provided.");
+			} else if (!params.containsKey(PAYEE)) {
+				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+			} else if (!params.containsKey(FROM)) {
+				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+			} else if (!params.containsKey(AMOUNT)) {
+				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+			} else if (!params.containsKey(CURRENCY)) {
+				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+			}
+
+			String userid = params.get(USERID).toString();
+			int to_payee = Integer.parseInt(params.get(PAYEE).toString());
+			int from_account = Integer.parseInt(params.get(FROM).toString());
+			double amount = Double.parseDouble(params.get(AMOUNT).toString());
+			String currency = params.get(CURRENCY).toString();
+
+			if (BankDatabaseUtil.getAccount(userid, from_account) == null) {
+				return JsonUtil.errorJson(SERVICE + "-1006", "No such account.");
+			} else if (BankDatabaseUtil.getPayee(to_payee) == null) {
+				return JsonUtil.errorJson(SERVICE + "-1006", "No such payee.");
+			} else if (BankDatabaseUtil.makePayment(userid, from_account, to_payee, amount, currency)) {
+				return JsonUtil.makeJson(SUCCESS, "Successfully made bill payment.");
+			}
+			return JsonUtil.errorJson(SERVICE + "-1007", "Failed to make bill payment.");
+		} catch (Exception e) {
+			return JsonUtil.fail(e);
+		}
+	}
+
+	@GET
+	@Path(BILL_PAYEE)
+	public String billPayee() {
+		try {
+			return JsonUtil.makeJson(PAYEES, JsonUtil.stringify(BankDatabaseUtil.getPayees()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.fail(e);
+		}
+	}
+
+	@POST
+	@Path(BILL_PAYEE)
+	public String billPayee(HashMap<String, Object> params) {
+		try {
+			if (!params.containsKey(SEARCH)) {
+				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+			}
+
+			String search = params.get(SEARCH).toString();
+			return JsonUtil.makeJson(PAYEES, JsonUtil.stringify(BankDatabaseUtil.searchPayees(search)));
+		} catch (Exception e) {
+			e.printStackTrace();
 			return JsonUtil.fail(e);
 		}
 	}

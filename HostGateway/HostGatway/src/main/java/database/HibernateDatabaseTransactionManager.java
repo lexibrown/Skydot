@@ -23,6 +23,9 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 	private static String SELECT_TRANSACTION_WITH_ID = "from " + CLASS_NAME
 			+ " as history where history.id = :id";
 
+	private static String SELECT_TRANSACTION = "from " + CLASS_NAME
+			+ " as history where history.id = :id and history.accountid = :accountid";
+
 	private static String SELECT_TRANSACTION_WITH_ACCOUNT_ID = "from " + CLASS_NAME
 			+ " as history where history.accountid = :accountid";
 
@@ -265,8 +268,10 @@ public class HibernateDatabaseTransactionManager extends AbstractHibernateDataba
 		try {
 			session = HibernateUtil.getCurrentSession();
 			transaction = session.beginTransaction();
-			Query query = session.createQuery(SELECT_TRANSACTION_WITH_ID);
+			Query query = session.createQuery(SELECT_TRANSACTION);
 			query.setParameter("id", trans.getId());
+			query.setParameter("accountid", trans.getAccountid());
+			
 			@SuppressWarnings("unchecked")
 			List<History> transactions = query.list();
 
