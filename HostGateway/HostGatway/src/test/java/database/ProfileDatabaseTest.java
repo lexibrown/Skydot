@@ -9,7 +9,7 @@ import data.Profile;
 import utils.BankDatabaseUtil;
 
 public class ProfileDatabaseTest {
-
+/*
 	@Test
 	public void testOneProfile() {
 		Profile p = new Profile("user123", "password123");
@@ -65,6 +65,7 @@ public class ProfileDatabaseTest {
 		assertTrue(BankDatabaseUtil.getAccountSummary(userid).isEmpty());
 		
 	}
+	*/
 
 	/*
 	

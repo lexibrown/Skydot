@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="PaymentService"
+             targetNamespace="http://skydot.com/PaymentService"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://skydot.com/PaymentService"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:types="http://skydot.com/PaymentService/types">
+
+    <types>
+        <schema targetNamespace="http://skydot.com/PaymentService/types"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:types="http://skydot.com/PaymentService/types"
+                xmlns="http://www.w3.org/2001/XMLSchema"
+                elementFormDefault="qualified" version="1.0">
+            <element name="search">
+                <complexType>
+                    <sequence>
+                        <element name="search" type="xsd:string"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="payees">
+                <complexType>
+                    <sequence>
+                        <element name="code" type="xsd:integer"/>
+                        <element name="message" type="xsd:string"/>
+                        <element name="payee" minOccurs="0" maxOccurs="unbounded">
+                            <complexType>
+                                <sequence>
+                                    <element name="id" type="xsd:integer"/>
+                                    <element name="name" type="xsd:string"/>
+                                </sequence>
+                            </complexType>
+                        </element>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+    </types>
+
+    <message name="PayeesRq">
+        <part name="search" element="types:search"/>
+    </message>
+    <message name="PayeesRs">
+        <part name="payees" element="types:payees"/>
+    </message>
+    <portType name="PaymentServicePort">
+        <operation name="search">
+            <input message="tns:PayeesRq" name="PayeesRq"/>
+            <output message="tns:PayeesRs" name="PayeesRs"/>
+        </operation>
+    </portType>
+    <binding name="PaymentBinding" type="tns:PaymentServicePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="search">
+            <!--<soap:operation soapAction="search"/>-->
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="PaymentService">
+        <documentation>WSDL File for PaymentService</documentation>
+        <port binding="tns:PaymentBinding" name="PaymentServicePort">
+            <soap:address location="http://localhost:9090/PaymentService/"/>
+        </port>
+    </service>
+</definitions>

@@ -9,7 +9,6 @@ import java.util.Random;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.skydot.Client;
 import com.skydot.paymentservice.PaymentServicePort;
 import com.skydot.paymentservice.types.Search;
 
@@ -202,16 +201,7 @@ public class BankDatabaseUtil {
 	}
 	
 	public static List<Payee> getPayees() {
-		// TODO Auto-generated method stub
-		
-		List<Payee> payees = new ArrayList<>();
-		payees.add(new Payee(1, "Bill1"));
-		payees.add(new Payee(2, "Bill2"));
-		payees.add(new Payee(3, "Bill3"));
-		payees.add(new Payee(4, "Bill4"));
-		payees.add(new Payee(5, "Bill5"));
-		
-		return payees;
+		return searchPayees("");
 	}
 	
 	public static List<Payee> searchPayees(String searchStr) {
@@ -225,8 +215,6 @@ public class BankDatabaseUtil {
 		for (com.skydot.paymentservice.types.Payees.Payee p : payeeResults) {
 			payees.add(new Payee(p.getId().intValue(), p.getName()));
 		}
-		
-		System.out.println("Result: " + client.search(search).getMessage());
 		return payees;
 	}
 	

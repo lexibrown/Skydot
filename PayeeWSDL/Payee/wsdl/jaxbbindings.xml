@@ -1,0 +1,16 @@
+
+<jaxb:bindings version="2.1" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb">
+    <jaxb:globalBindings generateElementProperty="false" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb">
+        <jaxb:javaType name="java.util.Calendar" xmlType="xs:date"
+                       parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime"
+                       printMethod="javax.xml.bind.DatatypeConverter.printDateTime"/>
+
+        <jaxb:javaType name="java.util.Calendar" xmlType="xs:dateTime"
+                       parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime"
+                       printMethod="javax.xml.bind.DatatypeConverter.printDateTime"/>
+
+        <jaxb:javaType name="java.lang.Boolean" xmlType="xs:boolean"/>
+
+        <jaxb:javaType name="java.lang.Integer" xmlType="xs:int"/>
+    </jaxb:globalBindings>
+</jaxb:bindings>
