@@ -34,8 +34,9 @@ def summary():
 
 	logging.debug(js)
 	
-	resp = Response(js, status = 200, mimetype = 'application/json')
-	return resp
+	if 'error' in js:
+		return Response(js, status = 401, mimetype = 'application/json')	
+	return Response(js, status = 200, mimetype = 'application/json')
 
 if __name__ == '__main__':
 	app.run(host="0.0.0.0", debug=True)

@@ -17,7 +17,7 @@ def invalid(error=None):
 	return resp
 
 @app.route('/bill', methods = ['POST'])
-def verify():
+def bill_payment():
 	if not request.json:
 		abort(400)
 	content = request.get_json()

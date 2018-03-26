@@ -9,15 +9,15 @@ app = Flask(__name__)
 def invalid(error=None):
 	message = {
 			'status': 400,
-			'error': 'ACC-1000',
+			'error': 'TRAN-1000',
 			'message': 'Invalid request'
 	}
 	resp = jsonify(message)
 	resp.status_code = 400
 	return resp
 
-@app.route('/account/details', methods = ['POST'])
-def details():
+@app.route('/transfer', methods = ['POST'])
+def transfer():
 	if not request.json:
 		abort(400)
 	content = request.get_json()
@@ -25,20 +25,30 @@ def details():
 	if 'user_id' not in content:
 		abort(400)
 		
-	if 'account_id' not in content:
+	if 'from_account' not in content:
 		abort(400)
 		
-	url = 'https://skydot-bank.azurewebsites.net/host/' + content.get('user_id') + "/" + content.get('account_id')
+	if 'to_account' not in content:
+		abort(400)
+		
+	if 'amount' not in content:
+		abort(400)
+		
+	if 'currency' not in content:
+		abort(400)
+		
+	url = 'https://skydot-bank.azurewebsites.net/host/transfer'
 	
 	logging.debug(url)
 	
-	response = requests.get(url = url)
+	response = requests.post(url = url, json = content)
 	js = json.dumps(response.json())
 
 	logging.debug(js)
 	
 	if 'error' in js:
-		return Response(js, status = 401, mimetype = 'application/json')
+		return Response(js, status = 400, mimetype = 'application/json')
+	
 	return Response(js, status = 200, mimetype = 'application/json')
 
 if __name__ == '__main__':

@@ -9,26 +9,39 @@ app = Flask(__name__)
 def invalid(error=None):
 	message = {
 			'status': 400,
-			'error': 'ACC-1000',
+			'error': 'BILL-1000',
 			'message': 'Invalid request'
 	}
 	resp = jsonify(message)
 	resp.status_code = 400
 	return resp
 
-@app.route('/account/details', methods = ['POST'])
-def details():
+@app.route('/bill/payee/search', methods = ['POST'])
+def bill_payee_search():
 	if not request.json:
 		abort(400)
 	content = request.get_json()
 
-	if 'user_id' not in content:
+	if 'search' not in content:
 		abort(400)
 		
-	if 'account_id' not in content:
-		abort(400)
-		
-	url = 'https://skydot-bank.azurewebsites.net/host/' + content.get('user_id') + "/" + content.get('account_id')
+	url = 'https://skydot-bank.azurewebsites.net/host/bill/payee'
+	
+	logging.debug(url)
+	
+	response = requests.post(url = url, json = content)
+	js = json.dumps(response.json())
+
+	logging.debug(js)
+	
+	if 'error' in js:
+		return Response(js, status = 400, mimetype = 'application/json')
+	
+	return Response(js, status = 200, mimetype = 'application/json')
+	
+@app.route('/bill/payee', methods = ['POST'])
+def bill_payee():		
+	url = 'https://skydot-bank.azurewebsites.net/host/bill/payee'
 	
 	logging.debug(url)
 	
@@ -38,7 +51,8 @@ def details():
 	logging.debug(js)
 	
 	if 'error' in js:
-		return Response(js, status = 401, mimetype = 'application/json')
+		return Response(js, status = 400, mimetype = 'application/json')
+	
 	return Response(js, status = 200, mimetype = 'application/json')
 
 if __name__ == '__main__':
