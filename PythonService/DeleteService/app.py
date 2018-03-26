@@ -9,7 +9,7 @@ app = Flask(__name__)
 def invalid(error=None):
 	message = {
 			'status': 400,
-			'error': 'AUTH-1000',
+			'error': 'DEL-1000',
 			'message': 'Invalid request'
 	}
 	resp = jsonify(message)
