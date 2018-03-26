@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11   CMakeFiles/HelloWorld.dir/HelloWorld.cpp.o  -o HelloWorld -rdynamic -lboost_system -lcrypto -lssl -lcpprest -lpthread 

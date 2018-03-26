@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cb/bill/HelloWorld.cpp
+string
+-
+iostream
+-
+map
+-
+set
+-
+string
+-
+cpprest/json.h
+-
+cpprest/http_listener.h
+-
+cpprest/uri.h
+-
+cpprest/asyncrt_utils.h
+-
+cpprest/http_client.h
+-
+

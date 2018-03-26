@@ -1,0 +1,3 @@
+/cb/bill/CMakeFiles/edit_cache.dir
+/cb/bill/CMakeFiles/rebuild_cache.dir
+/cb/bill/CMakeFiles/HelloWorld.dir
