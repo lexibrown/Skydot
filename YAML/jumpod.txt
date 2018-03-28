@@ -1,0 +1,7 @@
+Using the jumpod:
+
+kubectl exec jumpod -c shell -i -t -- ping <service>.default.svc.cluster.local
+kubectl exec jumpod -c shell -i -t -- curl http://<service>/
+
+
+Source: http://kubernetesbyexample.com/sd/
