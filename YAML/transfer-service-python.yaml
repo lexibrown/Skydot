@@ -1,0 +1,37 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: transfer-service-python
+spec:
+  selector:
+    matchLabels:
+      app: transfer-service-python
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: transfer-service-python
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: transfer-service-python
+          image: "lex13/transfer-service-python"
+          ports:
+            - name: http
+              containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: transfer-service-python
+spec:
+  selector:
+    app: transfer-service-python
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: http

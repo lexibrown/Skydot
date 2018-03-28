@@ -1,0 +1,37 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: bill-payment-service-java
+spec:
+  selector:
+    matchLabels:
+      app: bill-payment-service-java
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bill-payment-service-java
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: bill-payment-service-java
+          image: "lex13/bill-payment-service-java"
+          ports:
+            - name: http
+              containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bill-payment-service-java
+spec:
+  selector:
+    app: bill-payment-service-java
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: http
