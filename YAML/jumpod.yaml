@@ -10,3 +10,5 @@ spec:
       - "bin/bash"
       - "-c"
       - "sleep 10000"
+  nodeSelector:
+    micro: app
