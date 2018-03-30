@@ -13,5 +13,5 @@ public class BaseApplication {
 	public static final String PAYEE = "payee";
 	public static final String AMOUNT = "amount";
 	public static final String CURRENCY = "currency";
-
+	
 }
