@@ -1,0 +1,52 @@
+skydot: 4d161f57-ff0c-413e-9a3c-20137307c046
+
+skydot
+12/31/2299
+DqbSg8k8Rxt+4kIWafe3q5Xw0HunxvMDeJ4xw1k6lcw=
+
+az aks get-credentials --resource-group skydot --name skydot
+kubectl get nodes
+
+kubectl label nodes aks-agentpool-27077534-0 micro=app
+kubectl label nodes aks-agentpool-27077534-1 lang=python
+kubectl label nodes aks-agentpool-27077534-2 lang=cplus
+kubectl label nodes aks-agentpool-27077534-3 lang=javascript
+kubectl label nodes aks-agentpool-27077534-4 lang=java
+
+kubectl get nodes --show-labels
+
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/jumpod.yaml
+
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/auth-app.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/mobile-app.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/web-app.yaml
+
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/account-details-service-python.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/account-summary-service-python.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/bill-payee-service-java.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/bill-payee-service-javascript.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/bill-payee-service-python.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/bill-payment-service-cplus.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/bill-payment-service-java.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/bill-payment-service-javascript.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/bill-payment-service-python.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/create-service-cplus.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/create-service-python.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/delete-service-cplus.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/delete-service-python.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/transfer-service-cplus.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/transfer-service-java.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/transfer-service-javascript.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/transfer-service-python.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/verify-service-cplus.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/verify-service-python.yaml
+
+kubectl get pods -o wide
+
+
+kubectl exec jumpod -c shell -i -t -- ping <TODO>.default.svc.cluster.local
+kubectl exec jumpod -c shell -i -t -- curl -X POST http://<TODO>:8080
+
+kubectl exec jumpod -c shell -i -t -- curl -X POST http://verify-service-python:8080/auth
+
+

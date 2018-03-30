@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mobile-app
+spec:
+  selector:
+    app: mobile-app
+    tier: frontend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mobile-app
+spec:
+  selector:
+    matchLabels:
+      app: mobile-app
+      tier: frontend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mobile-app
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+      - name: nginx
+        image: "lex13/mobile-app"
+      nodeSelector:
+        micro: app
