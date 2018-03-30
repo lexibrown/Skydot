@@ -1,7 +1,7 @@
 from flask import Flask, request, abort, jsonify, Response, json
 from Crypto.Cipher import XOR
 import base64, time, redis, datetime
-import logging, sys
+import logging, sys, requests
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -59,7 +59,25 @@ def login():
 		abort(400)
 	content = request.get_json()
 
-	# TODO call back end to verify account
+	if 'user_id' not in content:
+		abort(400)
+		
+	if 'password' not in content:
+		abort(400)
+	
+	url = 'http://verify-service-python:8080/auth'
+	#url = 'http://verify-service-cplus:8080/auth'
+	
+	response = requests.post(url = url, json = content)
+	js = json.dumps(response.json())
+
+	logging.debug(js)
+	
+	if 'error' in js:
+		return Response(js, status = 401, mimetype = 'application/json')
+	
+	if 'success' not in js:
+		return Response(js, status = 401, mimetype = 'application/json')	
 	
 	ts = (time.time())
 	st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
@@ -83,6 +101,9 @@ def logout():
 		abort(400)
 	content = request.get_json()
 
+	if 'token' not in content:
+		abort(400)
+		
 	token = decrypt(content['token']).decode('utf-8').split('\\')
 	
 	if cache.get(token[0]) is None:
@@ -104,6 +125,9 @@ def verify():
 		abort(400)
 	content = request.get_json()
 
+	if 'token' not in content:
+		abort(400)
+	
 	token = decrypt(content['token']).decode('utf-8').split('\\')
 	
 	if cache.get(token[0]) is None:
@@ -113,10 +137,10 @@ def verify():
 	now = time.time()
 	elapsed = now - then
 
-	st = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
-	logging.debug("Now: " + st)
-	st = datetime.datetime.fromtimestamp(then).strftime('%Y-%m-%d %H:%M:%S')
-	logging.debug("Then: " + st)
+	st_now = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
+	logging.debug("Now: " + st_now)
+	st_then = datetime.datetime.fromtimestamp(then).strftime('%Y-%m-%d %H:%M:%S')
+	logging.debug("Then: " + st_then)
 	logging.debug("Diff: " + str(elapsed))
 
 	m = int(elapsed) / 60
@@ -124,8 +148,12 @@ def verify():
 	if m > 10:
 		abort(408)
 	
+	new_token = encrypt(token[0] + delimiter + token[1] + delimiter + str(st_now))
+	
+	cache.set(token[0], new_token)
+	
 	data = {
-		'message' : m
+		'success' : 'Valid token'
 	}
 	js = json.dumps(data)
 
@@ -138,6 +166,9 @@ def user():
 		abort(400)
 	content = request.get_json()
 
+	if 'token' not in content:
+		abort(400)
+	
 	token = decrypt(content['token'])
 	
 	data = {
