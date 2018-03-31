@@ -31,7 +31,7 @@ public class AccountUtil {
 		Map<String, Object> params = new HashMap<>();
 		params.put(Variables.USER_ID, userId);
 		params.put(Variables.ACCOUNT_ID, accountId);
-
+		
 		Map<String, Object> response = Connection.sendRequest(Endpoint.ACCOUNT_DETAILS, params);
 
 		if (response.containsKey(Variables.ERROR)) {

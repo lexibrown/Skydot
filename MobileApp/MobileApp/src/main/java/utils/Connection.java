@@ -27,7 +27,7 @@ public class Connection {
 		String input = JsonUtil.stringify(params);
 
 		Response response = target.request(MediaType.APPLICATION_JSON)
-				.post(Entity.entity(input, MediaType.APPLICATION_JSON), Response.class);
+				.post(Entity.entity(input, MediaType.APPLICATION_JSON), Response.class);		
 		Map<String, Object> res = (Map<String, Object>) response.readEntity(Map.class);
 		res.put(Variables.STATUS, response.getStatus());
 		return res;

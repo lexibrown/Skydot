@@ -15,8 +15,8 @@ public class Endpoint {
 	public static final String ACCOUNT_SUMMARY = "/account/summary";
 	public static final String ACCOUNT_DETAILS = "/account/details";
 
-	public static final String USER_CREATE = "/user/create";
-	public static final String USER_DELETE = "/user/delete";
+	public static final String USER_CREATE = "/create";
+	public static final String USER_DELETE = "/delete";
 
 	public static final String TRANSFER = "/transfer";
 
