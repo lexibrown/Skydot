@@ -94,8 +94,9 @@ public class AccountApplication {
 			if (accounts == null || accounts.isEmpty()) {
 				return JsonUtil.errorJson(SERVICE + "-1005", "No such user.");
 			}
-			return JsonUtil.makeJson(ACCOUNTS, JsonUtil.stringify(accounts));
+			return JsonUtil.makeJson(ACCOUNTS, accounts);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return JsonUtil.fail(e);
 		}
 	}
@@ -112,10 +113,11 @@ public class AccountApplication {
 			Map<String, Object> accountMap = account.toMap();
 
 			List<History> transations = BankDatabaseUtil.getTransactions(account.getId());
-			accountMap.put(TRANSACTIONS, JsonUtil.stringify(transations));
+			accountMap.put(TRANSACTIONS, transations);
 
 			return JsonUtil.stringify(accountMap);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return JsonUtil.fail(e);
 		}
 	}
@@ -194,7 +196,7 @@ public class AccountApplication {
 	@Path(BILL_PAYEE)
 	public String billPayee() {
 		try {
-			return JsonUtil.makeJson(PAYEES, JsonUtil.stringify(BankDatabaseUtil.getPayees()));
+			return JsonUtil.makeJson(PAYEES, BankDatabaseUtil.getPayees());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.fail(e);
@@ -210,7 +212,7 @@ public class AccountApplication {
 			}
 
 			String search = params.get(SEARCH).toString();
-			return JsonUtil.makeJson(PAYEES, JsonUtil.stringify(BankDatabaseUtil.searchPayees(search)));
+			return JsonUtil.makeJson(PAYEES, BankDatabaseUtil.searchPayees(search));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.fail(e);
