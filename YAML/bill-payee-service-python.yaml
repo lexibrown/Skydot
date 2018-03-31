@@ -1,24 +1,24 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: bill-payment-service-python
+  name: bill-payee-service-python
 spec:
   selector:
     matchLabels:
-      app: bill-payment-service-python
+      app: bill-payee-service-python
       tier: backend
       track: stable
   replicas: 1
   template:
     metadata:
       labels:
-        app: bill-payment-service-python
+        app: bill-payee-service-python
         tier: backend
         track: stable
     spec:
       containers:
-        - name: bill-payment-service-python
-          image: "lex13/bill-payment-service-python"
+        - name: bill-payee-service-python
+          image: "lex13/bill-payee-service-python"
           ports:
             - name: http
               containerPort: 8080
@@ -28,10 +28,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: bill-payment-service-python
+  name: bill-payee-service-python
 spec:
   selector:
-    app: bill-payment-service-python
+    app: bill-payee-service-python
     tier: backend
   ports:
   - protocol: TCP
