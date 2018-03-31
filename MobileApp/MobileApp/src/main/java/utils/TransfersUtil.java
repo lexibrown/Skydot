@@ -11,8 +11,8 @@ public class TransfersUtil {
 			throws Exception {
 		Map<String, Object> params = new HashMap<>();
 		params.put(Variables.USER_ID, userId);
-		params.put(Variables.FROM, fromId);
-		params.put(Variables.TO, toId);
+		params.put(Variables.FROM_ACCOUNT, fromId);
+		params.put(Variables.TO_ACCOUNT , toId);
 		params.put(Variables.AMOUNT, amount);
 		params.put(Variables.CURRENCY, currency);
 

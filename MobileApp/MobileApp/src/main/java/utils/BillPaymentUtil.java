@@ -1,7 +1,10 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import data.Payee;
 
 public class BillPaymentUtil {
 
@@ -15,17 +18,20 @@ public class BillPaymentUtil {
 
 		if (response.containsKey(Variables.ERROR)) {
 			return JsonUtil.stringify(response);
+		} else if (response.containsKey(Variables.PAYEES)) {
+			if (response.get(Variables.PAYEES) == null) {
+				return JsonUtil.makeJson(Variables.PAYEES, new ArrayList<Payee>());
+			}
 		}
-		// TODO change to fit response
 		return JsonUtil.stringify(response);
 	}
 
-	public static String submitBillPayment(String userId, int fromId, int toId, double amount, String currency)
+	public static String submitBillPayment(String userId, int fromId, int payee, double amount, String currency)
 			throws Exception {
 		Map<String, Object> params = new HashMap<>();
 		params.put(Variables.USER_ID, userId);
-		params.put(Variables.FROM, fromId);
-		params.put(Variables.TO, toId);
+		params.put(Variables.FROM_ACCOUNT, fromId);
+		params.put(Variables.PAYEE, payee);
 		params.put(Variables.AMOUNT, amount);
 		params.put(Variables.CURRENCY, currency);
 
