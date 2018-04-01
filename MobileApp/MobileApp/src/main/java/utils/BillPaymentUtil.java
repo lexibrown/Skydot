@@ -25,6 +25,23 @@ public class BillPaymentUtil {
 		}
 		return JsonUtil.stringify(response);
 	}
+	
+	public static String searchPayees(String userId, String search) throws Exception {
+		Map<String, Object> params = new HashMap<>();
+		params.put(Variables.USER_ID, userId);
+		params.put(Variables.SEARCH, search);
+
+		Map<String, Object> response = Connection.sendRequest(Endpoint.BILL_PAYEE_SEARCH, params);
+
+		if (response.containsKey(Variables.ERROR)) {
+			return JsonUtil.stringify(response);
+		} else if (response.containsKey(Variables.PAYEES)) {
+			if (response.get(Variables.PAYEES) == null) {
+				return JsonUtil.makeJson(Variables.PAYEES, new ArrayList<Payee>());
+			}
+		}
+		return JsonUtil.stringify(response);
+	}
 
 	public static String submitBillPayment(String userId, int fromId, int payee, double amount, String currency)
 			throws Exception {

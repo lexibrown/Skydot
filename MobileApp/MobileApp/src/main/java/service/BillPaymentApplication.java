@@ -18,6 +18,7 @@ import utils.Variables;
 public class BillPaymentApplication extends BaseApplication {
 
 	private final static String PAYEE = "/payee";
+	private final static String SEARCH = "/payee/search";
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
@@ -83,4 +84,29 @@ public class BillPaymentApplication extends BaseApplication {
 		}
 	}
 
+	@POST
+	@Path(SEARCH)
+	public String serachPayees(HashMap<String, Object> params) {
+		try {
+			if (!params.containsKey(Variables.TOKEN)) {
+				return JsonUtil.errorJson(SERVICE + "-1000", "No token provided.");
+			}
+
+			String token = params.get(Variables.TOKEN).toString();
+			String verify = TokenUtil.verifyToken(token);
+			if (verify != null) {
+				return verify;
+			}
+			
+			String search = "";
+			if (params.containsKey(Variables.SEARCH)) {
+				search = params.get(Variables.SEARCH).toString();
+			}
+			return BillPaymentUtil.searchPayees(TokenUtil.getUserId(token), search);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.fail(e);
+		}
+	}
+	
 }

@@ -21,6 +21,7 @@ public class Endpoint {
 	public static final String TRANSFER = "/transfer";
 
 	public static final String BILL_PAYEE = "/bill/payee";
+	public static final String BILL_PAYEE_SEARCH = "/bill/payee/search";
 	public static final String BILL = "/bill";
 
 	public static final Map<String, String> URLs;
@@ -33,8 +34,9 @@ public class Endpoint {
 		aMap.put(ACCOUNT_DETAILS, "account-details-service-python");
 
 		aMap.put(USER_CREATE, "create-service-cplus");
-		aMap.put(USER_DELETE, "delete-service-cplus");
 		// aMap.put(USER_CREATE, "create-service-python");
+
+		aMap.put(USER_DELETE, "delete-service-cplus");
 		// aMap.put(USER_DELETE, "delete-service-python");
 
 		aMap.put(TRANSFER, "transfer-service-java");
@@ -42,14 +44,18 @@ public class Endpoint {
 		// aMap.put(TRANSFER, "transfer-service-javascript");
 		// aMap.put(TRANSFER, "transfer-service-cplus");
 
-		aMap.put(BILL_PAYEE, "bill-payment-service-javascript");
-		// aMap.put(BILL_PAYEE, "bill-payment-service-python");
-		// aMap.put(BILL_PAYEE, "bill-payment-service-java");
-		// aMap.put(BILL_PAYEE, "bill-payment-service-cplus");
+		aMap.put(BILL, "bill-payment-service-javascript");
+		// aMap.put(BILL, "bill-payment-service-python");
+		// aMap.put(BILL, "bill-payment-service-java");
+		// aMap.put(BILL, "bill-payment-service-cplus");
 
-		aMap.put(BILL, "bill-payee-service-javascript");
-		// aMap.put(BILL, "bill-payee-service-python");
-		// aMap.put(BILL, "bill-payee-service-java");
+		aMap.put(BILL_PAYEE, "bill-payee-service-javascript");
+		// aMap.put(BILL_PAYEE, "bill-payee-service-python");
+		// aMap.put(BILL_PAYEE, "bill-payee-service-java");
+
+		aMap.put(BILL_PAYEE_SEARCH, "bill-payee-service-javascript");
+		// aMap.put(BILL_PAYEE_SEARCH, "bill-payee-service-python");
+		// aMap.put(BILL_PAYEE_SEARCH, "bill-payee-service-java");
 
 		URLs = Collections.unmodifiableMap(aMap);
 	}
