@@ -59,6 +59,7 @@ app.post('/bill/payee', function(req, res){
 			res.status(400).json(body);
 			return;
 		}
+		res.setHeader('Content-Type', 'application/json');
 		res.send(body);
 	});
 });

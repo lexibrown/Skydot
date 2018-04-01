@@ -47,8 +47,8 @@ public class BillPaymentApplication extends BaseApplication {
 			if (params.containsKey(Variables.FROM_ACCOUNT)) {
 				fromId = (int) params.get(Variables.FROM_ACCOUNT);
 			}
-			if (params.containsKey(PAYEE)) {
-				payee = (int) params.get(PAYEE);
+			if (params.containsKey(Variables.PAYEE)) {
+				payee = (int) params.get(Variables.PAYEE);
 			}
 			if (params.containsKey(Variables.AMOUNT)) {
 				amount = (double) params.get(Variables.AMOUNT);
