@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import utils.JsonUtil;
 import utils.TokenUtil;
 import utils.TransfersUtil;
+import utils.Variables;
 
 @Path("/transfer")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,11 +26,11 @@ public class TransfersApplication extends BaseApplication {
 	@POST
 	public String submitTransaction(HashMap<String, Object> params) {
 		try {
-			if (!params.containsKey(TOKEN)) {
+			if (!params.containsKey(Variables.TOKEN)) {
 				return JsonUtil.errorJson(SERVICE + "-1000", "No token provided.");
 			}
 
-			String token = params.get(TOKEN).toString();
+			String token = params.get(Variables.TOKEN).toString();
 			String verify = TokenUtil.verifyToken(token);
 			if (verify != null) {
 				return verify;
@@ -40,17 +41,17 @@ public class TransfersApplication extends BaseApplication {
 			double amount = 0.0;
 			String currency = "";
 
-			if (params.containsKey(FROM_ACCOUNT)) {
-				fromId = (int) params.get(FROM_ACCOUNT);
+			if (params.containsKey(Variables.FROM_ACCOUNT)) {
+				fromId = (int) params.get(Variables.FROM_ACCOUNT);
 			}
-			if (params.containsKey(TO_ACCOUNT)) {
-				toId = (int) params.get(TO_ACCOUNT);
+			if (params.containsKey(Variables.TO_ACCOUNT)) {
+				toId = (int) params.get(Variables.TO_ACCOUNT);
 			}
-			if (params.containsKey(AMOUNT)) {
-				amount = (double) params.get(AMOUNT);
+			if (params.containsKey(Variables.AMOUNT)) {
+				amount = (double) params.get(Variables.AMOUNT);
 			}
-			if (params.containsKey(CURRENCY)) {
-				currency = params.get(CURRENCY).toString();
+			if (params.containsKey(Variables.CURRENCY)) {
+				currency = params.get(Variables.CURRENCY).toString();
 			}
 
 			return TransfersUtil.submitTransaction(TokenUtil.getUserId(token), fromId, toId, amount, currency);

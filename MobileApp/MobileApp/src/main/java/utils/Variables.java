@@ -16,7 +16,7 @@ public class Variables {
 	public static final String TRANSACTIONS = "transactions";
 	
 	public static final String FROM_ACCOUNT = "from_account";
-	public static final String TO_ACCOUNT = "to_acount";
+	public static final String TO_ACCOUNT = "to_account";
 	public static final String PAYEE = "payee";
 	public static final String AMOUNT = "amount";
 	public static final String CURRENCY = "currency";

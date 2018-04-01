@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import utils.JsonUtil;
 import utils.UserUtil;
+import utils.Variables;
 
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
@@ -30,11 +31,11 @@ public class UserApplication extends BaseApplication {
 		try {
 			String userId = "";
 			String password = "";
-			if (params.containsKey(USER_ID)) {
-				userId = params.get(USER_ID).toString();
+			if (params.containsKey(Variables.USER_ID)) {
+				userId = params.get(Variables.USER_ID).toString();
 			}
-			if (params.containsKey(PASSWORD)) {
-				password = params.get(PASSWORD).toString();
+			if (params.containsKey(Variables.PASSWORD)) {
+				password = params.get(Variables.PASSWORD).toString();
 			}
 			return UserUtil.createUser(userId, password);
 		} catch (Exception e) {
@@ -49,11 +50,11 @@ public class UserApplication extends BaseApplication {
 		try {
 			String userId = "";
 			String password = "";
-			if (params.containsKey(USER_ID)) {
-				userId = params.get(USER_ID).toString();
+			if (params.containsKey(Variables.USER_ID)) {
+				userId = params.get(Variables.USER_ID).toString();
 			}
-			if (params.containsKey(PASSWORD)) {
-				password = params.get(PASSWORD).toString();
+			if (params.containsKey(Variables.PASSWORD)) {
+				password = params.get(Variables.PASSWORD).toString();
 			}
 			return UserUtil.deleteUser(userId, password);
 		} catch (Exception e) {

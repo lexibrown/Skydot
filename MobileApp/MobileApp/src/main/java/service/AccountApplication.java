@@ -28,11 +28,11 @@ public class AccountApplication extends BaseApplication {
 	@POST
 	public String account(HashMap<String, Object> params) {
 		try {
-			if (!params.containsKey(TOKEN)) {
+			if (!params.containsKey(Variables.TOKEN)) {
 				return JsonUtil.errorJson(SERVICE + "-1000", "No token provided.");
 			}
 
-			String token = params.get(TOKEN).toString();
+			String token = params.get(Variables.TOKEN).toString();
 			String verify = TokenUtil.verifyToken(token);
 			if (verify != null) {
 				return verify;
@@ -48,11 +48,11 @@ public class AccountApplication extends BaseApplication {
 	@Path(DETAILS)
 	public String accountDetails(HashMap<String, Object> params) {
 		try {
-			if (!params.containsKey(TOKEN)) {
+			if (!params.containsKey(Variables.TOKEN)) {
 				return JsonUtil.errorJson(SERVICE + "-1000", "No token provided.");
 			}
 
-			String token = params.get(TOKEN).toString();
+			String token = params.get(Variables.TOKEN).toString();
 			String verify = TokenUtil.verifyToken(token);
 			if (verify != null) {
 				return verify;

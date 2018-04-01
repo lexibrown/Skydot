@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import utils.BillPaymentUtil;
 import utils.JsonUtil;
 import utils.TokenUtil;
+import utils.Variables;
 
 @Path("/bill")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,11 +28,11 @@ public class BillPaymentApplication extends BaseApplication {
 	@POST
 	public String submitBillPayment(HashMap<String, Object> params) {
 		try {
-			if (!params.containsKey(TOKEN)) {
+			if (!params.containsKey(Variables.TOKEN)) {
 				return JsonUtil.errorJson(SERVICE + "-1000", "No token provided.");
 			}
 
-			String token = params.get(TOKEN).toString();
+			String token = params.get(Variables.TOKEN).toString();
 			String verify = TokenUtil.verifyToken(token);
 			if (verify != null) {
 				return verify;
@@ -42,17 +43,17 @@ public class BillPaymentApplication extends BaseApplication {
 			double amount = 0.0;
 			String currency = "";
 
-			if (params.containsKey(FROM_ACCOUNT)) {
-				fromId = (int) params.get(FROM_ACCOUNT);
+			if (params.containsKey(Variables.FROM_ACCOUNT)) {
+				fromId = (int) params.get(Variables.FROM_ACCOUNT);
 			}
 			if (params.containsKey(PAYEE)) {
 				payee = (int) params.get(PAYEE);
 			}
-			if (params.containsKey(AMOUNT)) {
-				amount = (double) params.get(AMOUNT);
+			if (params.containsKey(Variables.AMOUNT)) {
+				amount = (double) params.get(Variables.AMOUNT);
 			}
-			if (params.containsKey(CURRENCY)) {
-				currency = params.get(CURRENCY).toString();
+			if (params.containsKey(Variables.CURRENCY)) {
+				currency = params.get(Variables.CURRENCY).toString();
 			}
 
 			return BillPaymentUtil.submitBillPayment(TokenUtil.getUserId(token), fromId, payee, amount, currency);
@@ -66,11 +67,11 @@ public class BillPaymentApplication extends BaseApplication {
 	@Path(PAYEE)
 	public String getPayees(HashMap<String, Object> params) {
 		try {
-			if (!params.containsKey(TOKEN)) {
+			if (!params.containsKey(Variables.TOKEN)) {
 				return JsonUtil.errorJson(SERVICE + "-1000", "No token provided.");
 			}
 
-			String token = params.get(TOKEN).toString();
+			String token = params.get(Variables.TOKEN).toString();
 			String verify = TokenUtil.verifyToken(token);
 			if (verify != null) {
 				return verify;
