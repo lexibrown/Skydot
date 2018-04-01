@@ -57,7 +57,7 @@ void handle_request(
    display_json(answer, "S: ");
 
    json::value json_return;
-   http_client client("https://skydot-bank.azurewebsites.net/host/bill");
+   http_client client("http://skydot-bank.azurewebsites.net/host/bill");
 
    http_response response = client.request(web::http::methods::POST, U("/"), answer)
         .then([](const web::http::http_response& response) {
