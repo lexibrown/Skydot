@@ -10,7 +10,9 @@ spec:
   - protocol: TCP
     port: 8080
     targetPort: 8080
-  type: LoadBalancer
+  externalIPs:
+  - 52.168.161.146
+  type: NodePort
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
