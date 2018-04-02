@@ -11,7 +11,7 @@ spec:
     port: 8080
     targetPort: 8080
   externalIPs:
-  - 52.168.161.146
+  - 52.170.23.91
   type: NodePort
 ---
 apiVersion: apps/v1beta1
