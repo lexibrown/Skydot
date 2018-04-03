@@ -128,11 +128,13 @@ def verify():
 	if 'token' not in content:
 		abort(400)
 	
-	token = decrypt(content['token']).decode('utf-8').split('\\')
+	sent_token = decrypt(content['token']).decode('utf-8').split('\\')
 	
-	if cache.get(token[0]) is None:
+	if cache.get(sent_token[0]) is None:
 		abort(401)
 
+	token = decrypt(cache.get(sent_token[0])).decode('utf-8').split('\\')
+		
 	then = float(token[2])
 	now = time.time()
 	elapsed = now - then
@@ -148,7 +150,7 @@ def verify():
 	if m > 10:
 		abort(408)
 	
-	new_token = encrypt(token[0] + delimiter + token[1] + delimiter + str(st_now))
+	new_token = encrypt(token[0] + delimiter + token[1] + delimiter + str(now))
 	
 	cache.set(token[0], new_token)
 	

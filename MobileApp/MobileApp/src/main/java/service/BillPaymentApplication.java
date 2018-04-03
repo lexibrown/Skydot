@@ -51,7 +51,7 @@ public class BillPaymentApplication extends BaseApplication {
 				payee = (int) params.get(Variables.PAYEE);
 			}
 			if (params.containsKey(Variables.AMOUNT)) {
-				amount = (double) params.get(Variables.AMOUNT);
+				amount = new Double(params.get(Variables.AMOUNT).toString());
 			}
 			if (params.containsKey(Variables.CURRENCY)) {
 				currency = params.get(Variables.CURRENCY).toString();
