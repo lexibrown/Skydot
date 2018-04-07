@@ -7,7 +7,7 @@ import java.util.Map;
 public class Endpoint {
 
 	public static final String HTTP = "http://";
-	public static final String PORT = ":8080";
+	public static final String PORT = ":80";
 
 	public static final String AUTH_VERIFY = "/auth/verify";
 	public static final String AUTH_USER = "/auth/user";

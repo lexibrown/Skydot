@@ -16,7 +16,7 @@ public class Connection {
 
 	private static void reloadUri(String url) {
 		target = null;
-		target = client.target(Endpoint.HTTP + url + Endpoint.PORT);
+		target = client.target(Endpoint.HTTP + url);
 	}
 
 	@SuppressWarnings("unchecked")
