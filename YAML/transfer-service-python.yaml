@@ -21,7 +21,7 @@ spec:
           image: "lex13/transfer-service-python"
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
       nodeSelector:
         lang: python
 ---
@@ -35,5 +35,5 @@ spec:
     tier: backend
   ports:
   - protocol: TCP
-    port: 8080
+    port: 80
     targetPort: http
