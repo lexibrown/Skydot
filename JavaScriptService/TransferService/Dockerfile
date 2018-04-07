@@ -1,4 +1,4 @@
-FROM node:carbon
+FROM node:alpine
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -13,5 +13,5 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-EXPOSE 8080
+EXPOSE 80
 CMD [ "npm", "start" ]
