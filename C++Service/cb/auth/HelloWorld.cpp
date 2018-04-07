@@ -112,7 +112,7 @@ void handle_post(http_request request)
 
 int main()
 {
-   http_listener listener(U("http://0.0.0.0:8080/auth"));
+   http_listener listener(U("http://0.0.0.0:80/auth"));
 
    listener.support(methods::POST, handle_post);
    listener

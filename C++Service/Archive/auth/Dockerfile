@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 RUN apt-get update && apt-get install -y openssl zlib1g-dev libboost-all-dev libssl-dev libcpprest libcpprest-dev build-essential
 ADD HelloWorld /app/
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["/app/HelloWorld"]
 
 ## - still trying to get rid of: apt-get -y install libboost-dev libcpprest
