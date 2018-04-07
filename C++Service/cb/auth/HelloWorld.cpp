@@ -115,14 +115,14 @@ int main()
    http_listener listener(U("http://0.0.0.0:8080/auth"));
 
    listener.support(methods::POST, handle_post);
-
-   try
-   {
-      listener
+   listener
          .open()
          .then([&listener]() {TRACE(L"\nstarting to listen\n"); })
          .wait();
 
+   try
+   {
+      sleep(6000);
       while (true);
    }
    catch (exception const & e)
