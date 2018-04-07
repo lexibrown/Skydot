@@ -65,8 +65,8 @@ def login():
 	if 'password' not in content:
 		abort(400)
 	
-	url = 'http://verify-service-python:8080/auth'
-	#url = 'http://verify-service-cplus:8080/auth'
+	url = 'http://verify-service-python/auth'
+	#url = 'http://verify-service-cplus/auth'
 	
 	response = requests.post(url = url, json = content)
 	js = json.dumps(response.json())
@@ -182,4 +182,4 @@ def user():
 	return resp
 	
 if __name__ == '__main__':
-	app.run(host="0.0.0.0", port=8080, debug=True)
+	app.run(host="0.0.0.0", port=80, debug=True)
