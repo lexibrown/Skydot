@@ -20,7 +20,9 @@ CMD ["/bin/bash"]
 # make
 # ./HelloWorld &
 #
-# curl -v -H "Content-Type: application/json" -X PUT http://localhost:8080/restdemo -d '{"one" : "100", "two" : "200"}'
+# curl -v -H "Content-Type: application/json" -X POST http://localhost:8080/auth -d '{"one" : "100", "two" : "200"}'
+# curl -H "Content-Type: application/json" -X POST http://localhost:8080/auth -d '{"userid":"4500123412341234","password":"password"}'
+# curl -v -H "Content-Type: application/json" -X POST http://localhost:8080/auth -d '{"userid":"1234","password":"password"}'
 # curl http://localhost:8080/restdemo
 #
 # exit
