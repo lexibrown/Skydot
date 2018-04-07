@@ -1,0 +1,37 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: account-summary-service-python
+spec:
+  selector:
+    matchLabels:
+      app: account-summary-service-python
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: account-summary-service-python
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: account-summary-service-python
+          image: "lex13/account-summary-service-python"
+          ports:
+            - name: http
+              containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: account-summary-service-python
+spec:
+  selector:
+    app: account-summary-service-python
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http

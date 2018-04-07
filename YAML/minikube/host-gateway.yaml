@@ -1,0 +1,37 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: host-gateway
+spec:
+  selector:
+    matchLabels:
+      app: host-gateway
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: host-gateway
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: host-gateway
+          image: "lex13/host-gateway"
+          ports:
+            - name: http
+              containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: host-gateway
+spec:
+  selector:
+    app: host-gateway
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http

@@ -1,0 +1,37 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: transfer-service-javascript
+spec:
+  selector:
+    matchLabels:
+      app: transfer-service-javascript
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: transfer-service-javascript
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: transfer-service-javascript
+          image: "lex13/transfer-service-javascript"
+          ports:
+            - name: http
+              containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: transfer-service-javascript
+spec:
+  selector:
+    app: transfer-service-javascript
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http
