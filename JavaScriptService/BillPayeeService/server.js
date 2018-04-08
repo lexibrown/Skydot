@@ -7,7 +7,7 @@ const PORT = 80;
 const HOST = '0.0.0.0';
 
 var options = {
-    url: "https://skydot-bank.azurewebsites.net/host/bill/payee",
+    url: "http://host-gateway/host/bill/payee",
     method: "POST",
     headers: {
         "Content-Type": "application/json"
@@ -30,7 +30,7 @@ app.post('/bill/payee/search', function(req, res){
 		});
 	} else {
 		request.post({
-			url: "https://skydot-bank.azurewebsites.net/host/bill/payee",
+			url: "http://host-gateway/host/bill/payee",
 			headers: {
 				"Content-Type": "application/json"
 			},
@@ -50,7 +50,7 @@ app.post('/bill/payee', function(req, res){
     console.log(req.body);
 
 	request.get({
-		url: "https://skydot-bank.azurewebsites.net/host/bill/payee",
+		url: "http://host-gateway/host/bill/payee",
 		headers: {
 			"Content-Type": "application/json"
 		},

@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 public class TransfersUtil {
 
-	public static final String BASE_URL = "https://skydot-bank.azurewebsites.net";
+	public static final String BASE_URL = "http://host-gateway";
 	public static final String PATH = "/host/transfer";
 
 	public static Map<String, Object> submitTransaction(String userId, int fromId, int toId, double amount, String currency)

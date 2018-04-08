@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 public class BillPayeeUtil {
 
-	public static final String BASE_URL = "https://skydot-bank.azurewebsites.net";
+	public static final String BASE_URL = "http://host-gateway";
 	public static final String PATH = "/host/bill/payee";
 
 	public static Map<String, Object> getPayees() throws Exception {

@@ -25,7 +25,7 @@ def summary():
 	if 'user_id' not in content:
 		abort(400)
 		
-	url = 'https://skydot-bank.azurewebsites.net/host/' + content.get('user_id')
+	url = 'http://host-gateway/host/' + content.get('user_id')
 	
 	logging.debug(url)
 	

@@ -57,7 +57,7 @@ void handle_request(
    display_json(answer, "S: ");
 
    json::value json_return;
-   http_client client("http://skydot-bank.azurewebsites.net/host/transfer");
+   http_client client("http://host-gateway/host/transfer");
 
    http_response response = client.request(web::http::methods::POST, U("/"), answer)
         .then([](const web::http::http_response& response) {

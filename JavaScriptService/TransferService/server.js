@@ -7,7 +7,7 @@ const PORT = 80;
 const HOST = '0.0.0.0';
 
 var options = {
-    url: "https://skydot-bank.azurewebsites.net/host/transfer",
+    url: "http://host-gateway/host/transfer",
     method: "POST",
     headers: {
         "Content-Type": "application/json"
@@ -30,7 +30,7 @@ app.post('/transfer', function(req, res){
 		});
 	} else {
 		request.post({
-			url: "https://skydot-bank.azurewebsites.net/host/transfer",
+			url: "http://host-gateway/host/transfer",
 			headers: {
 				"Content-Type": "application/json"
 			},

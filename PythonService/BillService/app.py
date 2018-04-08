@@ -37,7 +37,7 @@ def bill_payment():
 	if 'currency' not in content:
 		abort(400)
 		
-	url = 'https://skydot-bank.azurewebsites.net/host/bill'
+	url = 'http://host-gateway/host/bill'
 	
 	logging.debug(url)
 	

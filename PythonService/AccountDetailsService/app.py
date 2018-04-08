@@ -28,7 +28,7 @@ def details():
 	if 'account_id' not in content:
 		abort(400)
 		
-	url = 'https://skydot-bank.azurewebsites.net/host/' + content.get('user_id') + "/" + str(content.get('account_id'))
+	url = 'http://host-gateway/host/' + content.get('user_id') + "/" + str(content.get('account_id'))
 	
 	logging.debug(url)
 	

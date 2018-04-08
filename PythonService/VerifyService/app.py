@@ -28,7 +28,7 @@ def verify():
 	if 'password' not in content:
 		abort(400)
 		
-	url = 'https://skydot-bank.azurewebsites.net/host/verify'
+	url = 'http://host-gateway/host/verify'
 	
 	logging.debug(url)
 	

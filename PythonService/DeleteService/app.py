@@ -28,7 +28,7 @@ def delete():
 	if 'password' not in content:
 		abort(400)
 		
-	url = 'https://skydot-bank.azurewebsites.net/host/delete'
+	url = 'http://host-gateway/host/delete'
 	
 	logging.debug(url)
 	

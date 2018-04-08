@@ -25,7 +25,7 @@ def bill_payee_search():
 	if 'search' not in content:
 		abort(400)
 		
-	url = 'https://skydot-bank.azurewebsites.net/host/bill/payee'
+	url = 'http://host-gateway/host/bill/payee'
 	
 	logging.debug(url)
 	
@@ -41,7 +41,7 @@ def bill_payee_search():
 	
 @app.route('/bill/payee', methods = ['POST'])
 def bill_payee():		
-	url = 'https://skydot-bank.azurewebsites.net/host/bill/payee'
+	url = 'http://host-gateway/host/bill/payee'
 	
 	logging.debug(url)
 	

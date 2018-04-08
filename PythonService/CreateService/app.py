@@ -28,7 +28,7 @@ def create():
 	if 'password' not in content:
 		abort(400)
 		
-	url = 'https://skydot-bank.azurewebsites.net/host/create'
+	url = 'http://host-gateway/host/create'
 	
 	logging.debug(url)
 	
