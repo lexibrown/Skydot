@@ -23,7 +23,7 @@ spec:
             - name: http
               containerPort: 8080
       nodeSelector:
-        micro: app
+        gateway: host
 ---
 kind: Service
 apiVersion: v1
