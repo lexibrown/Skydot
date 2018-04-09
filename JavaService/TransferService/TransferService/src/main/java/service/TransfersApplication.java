@@ -10,6 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import utils.JsonUtil;
 import utils.TransfersUtil;
 import utils.Variables;
@@ -17,7 +20,9 @@ import utils.Variables;
 @Path("/transfer")
 @Produces(MediaType.APPLICATION_JSON)
 public class TransfersApplication {
-
+	
+	private static final Logger log = LogManager.getLogger(TransfersApplication.class);
+	
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String sayPlainTextHello() {
@@ -51,12 +56,22 @@ public class TransfersApplication {
 			}
 			return Response.ok(JsonUtil.stringify(response), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_GATEWAY).build();
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 	
 	public Response errorResponse() throws Exception {
-		return Response.status(Response.Status.BAD_REQUEST).entity(JsonUtil.errorJson("TRANS-1000", "Invalid request")).build();
+		return Response.status(Response.Status.BAD_REQUEST).entity(JsonUtil.errorJson("TRAN-1000", "Invalid request")).build();
+	}
+
+	public Response crashResponse() {
+		try {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(JsonUtil.errorJson("TRAN-5000", "Something went wrong. Please try again.")).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 }

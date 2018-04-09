@@ -10,20 +10,25 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import utils.JsonUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import utils.BillPayeeUtil;
+import utils.JsonUtil;
 import utils.Variables;
 
 @Path("/bill/payee")
 @Produces(MediaType.APPLICATION_JSON)
 public class BillPayeeApplication {
 
+	private static final Logger log = LogManager.getLogger(BillPayeeApplication.class);
+
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String sayPlainTextHello() {
 		return "Hello";
 	}
-	
+
 	@POST
 	public Response getPayees(HashMap<String, Object> params) {
 		try {
@@ -33,7 +38,8 @@ public class BillPayeeApplication {
 			}
 			return Response.ok(JsonUtil.stringify(response), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_GATEWAY).build();
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
@@ -53,13 +59,23 @@ public class BillPayeeApplication {
 			}
 			return Response.ok(JsonUtil.stringify(response), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_GATEWAY).build();
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
 	public Response errorResponse() throws Exception {
 		return Response.status(Response.Status.BAD_REQUEST).entity(JsonUtil.errorJson("BILL-1000", "Invalid request"))
 				.build();
+	}
+
+	public Response crashResponse() {
+		try {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(JsonUtil.errorJson("BILL-5000", "Something went wrong. Please try again.")).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 }
