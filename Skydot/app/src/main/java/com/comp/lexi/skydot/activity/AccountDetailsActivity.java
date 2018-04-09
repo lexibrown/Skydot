@@ -92,22 +92,22 @@ public class AccountDetailsActivity extends BaseActivity {
     private void displayAccount(Account account) {
         txtName.setText(account.getName());
 
-        if (account.getBalanceCAD() == 0.0) {
+        if (account.getCAD() == 0.0) {
             txtCAD.setVisibility(View.GONE);
         } else {
-            txtCAD.setText(String.format(getString(R.string.balance_cad), account.getBalanceCAD()));
+            txtCAD.setText(String.format(getString(R.string.balance_cad), account.getCAD()));
             txtCAD.setVisibility(View.VISIBLE);
         }
-        if (account.getBalanceUSD() == 0.0) {
+        if (account.getUSD() == 0.0) {
             txtUSD.setVisibility(View.GONE);
         } else {
-            txtUSD.setText(String.format(getString(R.string.balance_usd), account.getBalanceUSD()));
+            txtUSD.setText(String.format(getString(R.string.balance_usd), account.getUSD()));
             txtUSD.setVisibility(View.VISIBLE);
         }
 
         txtId.setText("*" + account.getId());
 
-        historyAdapter.updateList(account.getHistory());
+        historyAdapter.updateList(account.getTransactions());
         BaseTransactionAdapter.setListViewHeightBasedOnChildren(historyListView);
 
     }
@@ -129,7 +129,7 @@ public class AccountDetailsActivity extends BaseActivity {
                         Account account = JsonUtil.parse(result.toString(), Account.class);
                         displayAccount(account);
                     } catch (IOException ioe) {
-                        showError("Event parse failed.");
+                        showError("Account parse failed.");
                         ioe.printStackTrace();
                     }
                 }

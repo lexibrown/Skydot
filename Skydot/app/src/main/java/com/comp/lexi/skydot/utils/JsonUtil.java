@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -13,7 +14,7 @@ import java.util.HashMap;
 
 public class JsonUtil {
     private static final ObjectMapper objectMapper = new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-            .configure(JsonParser.Feature.ALLOW_COMMENTS, true);
+            .configure(JsonParser.Feature.ALLOW_COMMENTS, true).configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
     private static final JsonFactory factory = objectMapper.getFactory();
 
     public static String stringify(Object object) throws Exception {

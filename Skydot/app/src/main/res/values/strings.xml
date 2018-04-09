@@ -8,6 +8,7 @@
     <string name="USERNAME">user_id</string>
     <string name="PASSWORD">password</string>
     <string name="TOKEN">token</string>
+    <string name="ACCOUNT_ID">account_id</string>
     <string name="ACCOUNTS">accounts</string>
     <string name="TRANSACTIONS">transactions</string>
     <string name="ERROR">error</string>

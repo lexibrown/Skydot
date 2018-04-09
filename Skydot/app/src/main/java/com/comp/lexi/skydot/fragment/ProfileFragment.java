@@ -147,6 +147,7 @@ public class ProfileFragment extends BaseFragment implements PullScrollView.OnTu
                         sortList(accounts);
                     } catch (IOException ioe) {
                         showError("Account list parse failed.");
+                        ioe.printStackTrace();
                     } catch (Exception e) {
                         showError("Unknown issue.");
                         e.printStackTrace();

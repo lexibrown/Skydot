@@ -8,6 +8,7 @@ public class AccountListItem implements Serializable {
 
     private static final long serialVersionUID = 736759228769686073L;
 
+    private String userid;
     private int id;
     private String name;
     private String type; // banking, borrowing, investing
@@ -15,6 +16,7 @@ public class AccountListItem implements Serializable {
     private double balanceUSD;
 
     public AccountListItem() {
+        this.userid = null;
         this.id = 0;
         this.name = null;
         this.type = Variables.AccountType.BANKING.getValue();
@@ -23,15 +25,24 @@ public class AccountListItem implements Serializable {
     }
 
     public AccountListItem(Account account) {
+        this.userid = account.getUserid();
         this.id = account.getId();
         this.name = account.getName();
         this.type = account.getType();
-        this.balanceCAD = account.getBalanceCAD();
-        this.balanceUSD = account.getBalanceUSD();
+        this.balanceCAD = account.getCAD();
+        this.balanceUSD = account.getUSD();
     }
 
     public boolean equals(AccountListItem other) {
         return other.getId() == this.id;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public int getId() {

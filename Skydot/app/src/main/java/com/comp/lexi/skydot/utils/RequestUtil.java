@@ -48,10 +48,39 @@ public class RequestUtil {
         return params;
     }
 
-    private void makeRequest(final VolleyCallBack callback, int method, String url) {
+    private void makeAuthRequest(final VolleyCallBack callback, int method, String path) {
         JSONObject requestParams = new JSONObject(getParams());
 
-        JsonObjectRequest req = new JsonObjectRequest(method, Variables.BASE_URL + url, requestParams,
+        JsonObjectRequest req = new JsonObjectRequest(method, Variables.AUTH_URL + path, requestParams,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("///////////////////////////////////////////////////");
+                        System.out.println(response);
+                        System.out.println(response.toString());
+                        System.out.println("///////////////////////////////////////////////////");
+
+                        callback.onSuccess(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("///////////////////////////////////////////////////");
+                        System.out.println(error.getMessage());
+                        error.printStackTrace();
+                        System.out.println("///////////////////////////////////////////////////");
+
+                        callback.onFailure(error.getMessage());
+                    }
+                }
+        );
+        addToRequestQueue(req);
+    }
+    private void makeRequest(final VolleyCallBack callback, int method, String path) {
+        JSONObject requestParams = new JSONObject(getParams());
+
+        JsonObjectRequest req = new JsonObjectRequest(method, Variables.BASE_URL + path, requestParams,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -82,13 +111,13 @@ public class RequestUtil {
         params = new HashMap<>();
         params.put(context.getString(R.string.USERNAME), username);
         params.put(context.getString(R.string.PASSWORD), password);
-        makeRequest(callback, Request.Method.POST, Variables.LOGIN);
+        makeAuthRequest(callback, Request.Method.POST, Variables.LOGIN);
     }
 
     public void logout(final VolleyCallBack callback) {
         params = new HashMap<>();
         params.put(context.getString(R.string.TOKEN), UserDataStore.getDataStore().getToken());
-        makeRequest(callback, Request.Method.POST, Variables.LOGOUT);
+        makeAuthRequest(callback, Request.Method.POST, Variables.LOGOUT);
     }
 
     public void register(final VolleyCallBack callback, String username, String password) {
@@ -114,7 +143,8 @@ public class RequestUtil {
     public void getAccountDetails(final VolleyCallBack callback, int accountId) {
         params = new HashMap<>();
         params.put(context.getString(R.string.TOKEN), UserDataStore.getDataStore().getToken());
-        makeRequest(callback, Request.Method.POST, String.format(Locale.getDefault(), Variables.ACCOUNT_DETAILS, accountId));
+        params.put(context.getString(R.string.ACCOUNT_ID), accountId);
+        makeRequest(callback, Request.Method.POST, Variables.ACCOUNT_DETAILS);
     }
 
     public void submitTransfer(final VolleyCallBack callback, Map<String, Object> params) {

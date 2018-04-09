@@ -84,9 +84,11 @@ public class LoginActivity extends BaseActivity {
     private void attemptLogin() {
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ?
-                        null : getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        if (inputManager != null) {
+            inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ?
+                            null : getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
 
         // Reset errors.
         usernameView.setError(null);
