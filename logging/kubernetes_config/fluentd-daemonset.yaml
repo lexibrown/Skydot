@@ -23,7 +23,7 @@ spec:
       - name: fluentd-logging
         # For Production use replace image name by an image in your private registry and set imagePullPolicy to reasonable value.
         image: lex13/kubernetes-logging:1.19
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         # Change for production use. Use the environment variable to the URL of your production host.
         env:
           - name: "ELASTICSEARCH_LOGGING_SERVICE_HOST"

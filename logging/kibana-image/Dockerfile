@@ -33,5 +33,7 @@ RUN cd / && \
 
 COPY run.sh /run.sh
 
+RUN chmod +x /run.sh
+
 EXPOSE 5601
 CMD ["/run.sh"]
