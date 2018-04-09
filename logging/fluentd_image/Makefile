@@ -20,8 +20,8 @@ IMAGE = kubernetes-logging
 TAG = 1.19
 
 build:	
-	docker build -t $(REGISTRY)/$(IMAGE):$(TAG) .
+	docker build -t $(REGISTRY)/$(IMAGE):$(TAG) -t $(REGISTRY)/$(IMAGE):latest .
 
 push:	
 	docker push $(REGISTRY)/$(IMAGE):$(TAG)
-#	docker push $(REGISTRY)/$(IMAGE):latest
+	docker push $(REGISTRY)/$(IMAGE):latest

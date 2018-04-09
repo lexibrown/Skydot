@@ -33,7 +33,10 @@ RUN ulimit -n 65536
 ENV DEBIAN_FRONTEND noninteractive
 
 COPY build.sh /tmp/build.sh
+# Change permissions
+RUN chmod +x /tmp/build.sh
 RUN /tmp/build.sh
+
 
 # Create directory to store fluentd pos files.
 RUN mkdir -p /var/lib/fluentd

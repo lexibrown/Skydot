@@ -42,6 +42,8 @@ COPY template-k8s-logstash.json /elasticsearch/config/templates/template-k8s-log
 COPY run.sh /
 COPY elasticsearch_logging_discovery /
 
+RUN chmod +x /run.sh
+
 RUN mkdir -p /data && chown -R elasticsearch:elasticsearch /data && chown -R elasticsearch:elasticsearch /elasticsearch
 USER elasticsearch
 
