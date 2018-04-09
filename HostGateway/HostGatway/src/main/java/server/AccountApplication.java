@@ -52,7 +52,6 @@ public class AccountApplication {
 	public static final String PAYEE = "payee";
 	public static final String SEARCH = "search";
 
-	public static final String SUCCESS = "success";
 	public static final String ACCOUNTS = "accounts";
 	public static final String TRANSACTIONS = "transactions";
 	public static final String PAYEES = "payees";
@@ -284,7 +283,7 @@ public class AccountApplication {
 	}
 
 	public Response success(String message) throws Exception {
-		return Response.ok(JsonUtil.makeJson(SUCCESS, message), MediaType.APPLICATION_JSON).build();
+		return Response.ok(JsonUtil.makeJson(MESSAGE, message), MediaType.APPLICATION_JSON).build();
 	}
 
 	public Response invalidResponse() throws Exception {
