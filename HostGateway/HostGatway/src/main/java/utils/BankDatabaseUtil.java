@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -22,6 +24,8 @@ import database.HibernateDatabaseTransactionManager;
 
 public class BankDatabaseUtil {
 
+	private static final Logger log = LogManager.getLogger(BankDatabaseUtil.class);
+	
 	public static boolean userExists(String username) {
 		return HibernateDatabaseProfileManager.getDefault().profileExists(username);
 	}
@@ -92,7 +96,7 @@ public class BankDatabaseUtil {
 			return false;
 		}
 		
-		if (from_account.getType().equals("Investing")) {
+		if (from_account.getType().equals(Variables.INVESTING)) {
 			return false;
 		}
 
@@ -126,7 +130,6 @@ public class BankDatabaseUtil {
 
 		HibernateDatabaseTransactionManager.getDefault().add(from_history);
 
-
 		History to_history = new History();
 		to_history.setAccountid(to);
 		to_history.setAmount(amount);
@@ -154,7 +157,7 @@ public class BankDatabaseUtil {
 			return false;
 		}
 		
-		if (account.getType().equals("Investing")) {
+		if (account.getType().equals(Variables.INVESTING)) {
 			return false;
 		}
 
@@ -307,11 +310,11 @@ public class BankDatabaseUtil {
 
 				int randType = rand.nextInt(3) + 1;
 				if (randType == 1) {
-					a.setType("Banking");
+					a.setType(Variables.BANKING);
 				} else if (randType == 2) {
-					a.setType("Borrowing");
+					a.setType(Variables.BORROWING);
 				} else {
-					a.setType("Investing");
+					a.setType(Variables.INVESTING);
 				}
 
 				a.setName("A simple " + a.getType() + " account");
@@ -329,7 +332,7 @@ public class BankDatabaseUtil {
 
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 			return false;
 		}
 	}

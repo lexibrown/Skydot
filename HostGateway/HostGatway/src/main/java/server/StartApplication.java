@@ -14,8 +14,7 @@ public class StartApplication extends Application {
 		// register root resource
 
 		classes.add(AccountApplication.class);
-		classes.add(Hello.class);
-
+		
 		return classes;
 	}
 }

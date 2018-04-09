@@ -10,15 +10,21 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import data.Account;
 import data.History;
-import utils.JsonUtil;
 import utils.BankDatabaseUtil;
+import utils.JsonUtil;
 
 @Path("/host")
 @Produces(MediaType.APPLICATION_JSON)
 public class AccountApplication {
+
+	private static final Logger log = LogManager.getLogger(AccountApplication.class);
 
 	public static final String SERVICE = "HOST";
 
@@ -66,48 +72,49 @@ public class AccountApplication {
 	 */
 	@POST
 	@Path(VERIFY)
-	public String verify(HashMap<String, Object> params) {
+	public Response verify(HashMap<String, Object> params) {
 		try {
 			if (!params.containsKey(USERID)) {
-				return JsonUtil.errorJson(SERVICE + "-1000", "No username provided.");
+				return noUserGivenResponse();
 			}
 			if (!params.containsKey(PASSWORD)) {
-				return JsonUtil.errorJson(SERVICE + "-1003", "No password provided.");
+				return noPasswordGivenResponse();
 			}
 			String username = params.get(USERID).toString();
 			String password = params.get(PASSWORD).toString();
 
 			if (BankDatabaseUtil.userExists(username, password)) {
-				return JsonUtil.makeJson(SUCCESS, "Verifed user.");
+				return success("Verifed user.");
 			}
-			return JsonUtil.errorJson(SERVICE + "-1001", "Invalid username and/or password.");
+			return invalidLoginResponse();
 		} catch (Exception e) {
-			return JsonUtil.fail(e);
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
 	@GET
 	@Path(ACCOUNT_SUMMARY)
-	public String accountSummary(@PathParam(USERID) String userid) {
+	public Response accountSummary(@PathParam(USERID) String userid) {
 		try {
 			List<Account> accounts = BankDatabaseUtil.getAccountSummary(userid);
 			if (accounts == null || accounts.isEmpty()) {
-				return JsonUtil.errorJson(SERVICE + "-1005", "No such user.");
+				return noUserResponse();
 			}
-			return JsonUtil.makeJson(ACCOUNTS, accounts);
+			return Response.ok(JsonUtil.makeJson(ACCOUNTS, accounts), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return JsonUtil.fail(e);
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
 	@GET
 	@Path(ACCOUNT_DETAILS)
-	public String accountDetails(@PathParam(USERID) String userid, @PathParam(ACCOUNTID) int accountid) {
+	public Response accountDetails(@PathParam(USERID) String userid, @PathParam(ACCOUNTID) int accountid) {
 		try {
 			Account account = BankDatabaseUtil.getAccount(userid, accountid);
 			if (account == null) {
-				return JsonUtil.errorJson(SERVICE + "-1006", "No such account.");
+				return noAccountResponse();
 			}
 
 			Map<String, Object> accountMap = account.toMap();
@@ -115,27 +122,27 @@ public class AccountApplication {
 			List<History> transations = BankDatabaseUtil.getTransactions(account.getId());
 			accountMap.put(TRANSACTIONS, transations);
 
-			return JsonUtil.stringify(accountMap);
+			return Response.ok(JsonUtil.stringify(accountMap), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return JsonUtil.fail(e);
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
 	@POST
 	@Path(TRANSFER)
-	public String transfer(HashMap<String, Object> params) {
+	public Response transfer(HashMap<String, Object> params) {
 		try {
 			if (!params.containsKey(USERID)) {
-				return JsonUtil.errorJson(SERVICE + "-1000", "No username provided.");
+				return noUserGivenResponse();
 			} else if (!params.containsKey(TO)) {
-				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+				return missingResponse();
 			} else if (!params.containsKey(FROM)) {
-				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+				return missingResponse();
 			} else if (!params.containsKey(AMOUNT)) {
-				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+				return missingResponse();
 			} else if (!params.containsKey(CURRENCY)) {
-				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+				return missingResponse();
 			}
 
 			String userid = params.get(USERID).toString();
@@ -145,32 +152,33 @@ public class AccountApplication {
 			String currency = params.get(CURRENCY).toString();
 
 			if (BankDatabaseUtil.getAccount(userid, from_account) == null) {
-				return JsonUtil.errorJson(SERVICE + "-1006", "No such account.");
+				return noAccountResponse();
 			} else if (BankDatabaseUtil.getAccount(userid, to_account) == null) {
-				return JsonUtil.errorJson(SERVICE + "-1006", "No such account.");
+				return noAccountResponse();
 			} else if (BankDatabaseUtil.makeTransfer(userid, from_account, to_account, amount, currency)) {
-				return JsonUtil.makeJson(SUCCESS, "Successfully made transfer.");
+				return success("Successfully made transfer.");
 			}
-			return JsonUtil.errorJson(SERVICE + "-1007", "Failed to make transfer.");
+			return failTransferResponse();
 		} catch (Exception e) {
-			return JsonUtil.fail(e);
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
 	@POST
 	@Path(BILL_PAYMENT)
-	public String billPayment(HashMap<String, Object> params) {
+	public Response billPayment(HashMap<String, Object> params) {
 		try {
 			if (!params.containsKey(USERID)) {
-				return JsonUtil.errorJson(SERVICE + "-1000", "No username provided.");
+				return noUserGivenResponse();
 			} else if (!params.containsKey(PAYEE)) {
-				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+				return missingResponse();
 			} else if (!params.containsKey(FROM)) {
-				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+				return missingResponse();
 			} else if (!params.containsKey(AMOUNT)) {
-				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+				return missingResponse();
 			} else if (!params.containsKey(CURRENCY)) {
-				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+				return missingResponse();
 			}
 
 			String userid = params.get(USERID).toString();
@@ -180,124 +188,171 @@ public class AccountApplication {
 			String currency = params.get(CURRENCY).toString();
 
 			if (BankDatabaseUtil.getAccount(userid, from_account) == null) {
-				return JsonUtil.errorJson(SERVICE + "-1006", "No such account.");
+				return noAccountResponse();
 			} else if (BankDatabaseUtil.getPayee(to_payee) == null) {
-				return JsonUtil.errorJson(SERVICE + "-1006", "No such payee.");
+				return noPayeeResponse();
 			} else if (BankDatabaseUtil.makePayment(userid, from_account, to_payee, amount, currency)) {
-				return JsonUtil.makeJson(SUCCESS, "Successfully made bill payment.");
+				return success("Successfully made bill payment.");
 			}
-			return JsonUtil.errorJson(SERVICE + "-1007", "Failed to make bill payment.");
+			return failBillResponse();
 		} catch (Exception e) {
-			return JsonUtil.fail(e);
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
 	@GET
 	@Path(BILL_PAYEE)
-	public String billPayee() {
+	public Response billPayee() {
 		try {
-			return JsonUtil.makeJson(PAYEES, BankDatabaseUtil.getPayees());
+			return Response.ok(JsonUtil.makeJson(PAYEES, BankDatabaseUtil.getPayees()), MediaType.APPLICATION_JSON)
+					.build();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return JsonUtil.fail(e);
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
 	@POST
 	@Path(BILL_PAYEE)
-	public String billPayee(HashMap<String, Object> params) {
+	public Response billPayee(HashMap<String, Object> params) {
 		try {
 			if (!params.containsKey(SEARCH)) {
-				return JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.");
+				return missingResponse();
 			}
 
 			String search = params.get(SEARCH).toString();
-			return JsonUtil.makeJson(PAYEES, BankDatabaseUtil.searchPayees(search));
+			return Response
+					.ok(JsonUtil.makeJson(PAYEES, BankDatabaseUtil.searchPayees(search)), MediaType.APPLICATION_JSON)
+					.build();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return JsonUtil.fail(e);
-		}
-	}
-
-	@GET
-	@Path(WITHDRAW)
-	public String withdraw(@PathParam(USERID) String userid, @PathParam(ACCOUNTID) int accountid,
-			@PathParam(AMOUNT) double amount, @PathParam(CURRENCY) String currency) {
-		try {
-			if (BankDatabaseUtil.getAccount(userid, accountid) == null) {
-				return JsonUtil.errorJson(SERVICE + "-1006", "No such account.");
-			} else if (BankDatabaseUtil.withdraw(userid, accountid, amount, currency)) {
-				return JsonUtil.makeJson(SUCCESS, "Successfully made withdrawal.");
-			}
-			return JsonUtil.errorJson(SERVICE + "-1007", "Failed to make withdrawal");
-		} catch (Exception e) {
-			return JsonUtil.fail(e);
-		}
-	}
-
-	@GET
-	@Path(DEPOSIT)
-	public String deposit(@PathParam(USERID) String userid, @PathParam(ACCOUNTID) int accountid,
-			@PathParam(AMOUNT) double amount, @PathParam(CURRENCY) String currency) {
-		try {
-			if (BankDatabaseUtil.getAccount(userid, accountid) == null) {
-				return JsonUtil.errorJson(SERVICE + "-1006", "No such account.");
-			} else if (BankDatabaseUtil.deposit(userid, accountid, amount, currency)) {
-				return JsonUtil.makeJson(SUCCESS, "Successfully made deposit.");
-			}
-			return JsonUtil.errorJson(SERVICE + "-1008", "Failed to make deposit");
-		} catch (Exception e) {
-			return JsonUtil.fail(e);
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
 	@POST
 	@Path(CREATE)
-	public String createUser(HashMap<String, Object> params) {
+	public Response createUser(HashMap<String, Object> params) {
 		try {
 			if (!params.containsKey(USERID)) {
-				return JsonUtil.errorJson(SERVICE + "-1000", "No username provided.");
+				return noUserGivenResponse();
 			}
 			if (!params.containsKey(PASSWORD)) {
-				return JsonUtil.errorJson(SERVICE + "-1003", "No password provided.");
+				return noPasswordGivenResponse();
 			}
 			String userid = params.get(USERID).toString();
 			String password = params.get(PASSWORD).toString();
 
 			if (BankDatabaseUtil.userExists(userid)) {
-				return JsonUtil.errorJson(SERVICE + "-1002", "Username is taken. Please try a new one.");
+				return takenUserResponse();
 			} else if (!BankDatabaseUtil.addUser(userid, password)) {
-				return JsonUtil.errorJson(SERVICE + "-1004", "Couldn't add user. Please try again.");
+				return failAddUserResponse();
 			}
-			return JsonUtil.makeJson(SUCCESS, "Created user.");
+			return success("Created user.");
 		} catch (Exception e) {
-			return JsonUtil.fail(e);
+			log.error(e.getMessage(), e);
+			return crashResponse();
 		}
 	}
 
 	@POST
 	@Path(DELETE)
-	public String removeUser(HashMap<String, Object> params) {
+	public Response removeUser(HashMap<String, Object> params) {
 		try {
 			if (!params.containsKey(USERID)) {
-				return JsonUtil.errorJson(SERVICE + "-1000", "No username provided.");
+				return noUserGivenResponse();
 			}
 			if (!params.containsKey(PASSWORD)) {
-				return JsonUtil.errorJson(SERVICE + "-1003", "No password provided.");
+				return noPasswordGivenResponse();
 			}
 			String userid = params.get(USERID).toString();
 			String password = params.get(PASSWORD).toString();
 
 			if (!BankDatabaseUtil.userExists(userid, password)) {
-				return JsonUtil.errorJson(SERVICE + "-1001", "Invalid username and/or password.");
+				return invalidLoginResponse();
 			}
 
 			if (BankDatabaseUtil.removeUser(userid)) {
-				return JsonUtil.makeJson(SUCCESS, "User successfully removed.");
+				return success("User successfully removed.");
 			}
-			return JsonUtil.errorJson(SERVICE + "-1001", "Invalid username and/or password.");
+			return invalidLoginResponse();
 		} catch (Exception e) {
-			return JsonUtil.fail(e);
+			log.error(e.getMessage(), e);
+			return crashResponse();
+		}
+	}
+
+	public Response success(String message) throws Exception {
+		return Response.ok(JsonUtil.makeJson(SUCCESS, message), MediaType.APPLICATION_JSON).build();
+	}
+
+	public Response invalidResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-2000", "Invalid request.")).build();
+	}
+
+	public Response noUserGivenResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1000", "No username provided.")).build();
+	}
+
+	public Response invalidLoginResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1001", "Invalid username and/or password.")).build();
+	}
+
+	public Response takenUserResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1002", "User id is taken. Please try a new one.")).build();
+	}
+
+	public Response noPasswordGivenResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1003", "No password provided.")).build();
+	}
+
+	public Response failAddUserResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1004", "Couldn't add user. Please try again.")).build();
+	}
+
+	public Response noUserResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1005", "No such user.")).build();
+	}
+
+	public Response noAccountResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1006", "No such account.")).build();
+	}
+
+	public Response noPayeeResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1006", "No such payee.")).build();
+	}
+
+	public Response failTransferResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1007", "Failed to make transfer.")).build();
+	}
+
+	public Response failBillResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1008", "Failed to make bill payment.")).build();
+	}
+
+	public Response missingResponse() throws Exception {
+		return Response.status(Response.Status.BAD_REQUEST)
+				.entity(JsonUtil.errorJson(SERVICE + "-1009", "Important parameters missing.")).build();
+	}
+
+	public Response crashResponse() {
+		try {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(JsonUtil.errorJson(SERVICE + "-5000", "Something went wrong. Please try again.")).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
