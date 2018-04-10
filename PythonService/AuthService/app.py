@@ -100,9 +100,6 @@ def login():
 		if 'error' in js:
 			return Response(js, status = 401, mimetype = 'application/json')
 		
-		if 'success' not in js:
-			return Response(js, status = 401, mimetype = 'application/json')	
-		
 		ts = (time.time())
 		st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 

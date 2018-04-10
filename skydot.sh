@@ -3,6 +3,12 @@
 
 kubectl get nodes --show-labels
 
+
+#kubectl apply -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/balance.yaml
+
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/host-gateway.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/transfer-service-spring.yaml
+
 kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/jumpod.yaml
 
 kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/auth-app.yaml
