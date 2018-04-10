@@ -1,0 +1,26 @@
+logging:
+  level: INFO
+
+# actuator /info, /health
+endpoints:
+  enabled: false
+  info:
+    enabled: true
+  health:
+    enabled: true
+    sensitive: false
+
+# actuator /info configuration
+info:
+  app:
+    name: '@project.artifactId@'
+    description: '@project.name@'
+    version: '@project.version@'
+
+server:
+  port: 8080
+
+spring:
+  jackson:
+    serialization.FAIL_ON_EMPTY_BEANS: false
+    property-naming-strategy: SNAKE_CASE

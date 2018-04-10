@@ -1,0 +1,22 @@
+info:
+  app:
+    name: '@project.artifactId@'
+    description: '@project.name@'
+    version: '@project.version@'
+
+spring:
+  profiles:
+    include:
+      - default
+  jackson:
+    serialization.FAIL_ON_EMPTY_BEANS: false
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: non_empty
+
+logging:
+  level:
+    com.skydot: debug
+
+security:
+  basic:
+    enabled: false
