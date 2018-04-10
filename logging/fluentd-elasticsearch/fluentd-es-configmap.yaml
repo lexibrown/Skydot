@@ -423,6 +423,9 @@ data:
       host elasticsearch-logging
       port 9200
       logstash_format true
+      request_timeout 15s
+      logstash_prefix kubernetes-${record['kubernetes']['pod_name']}
+      buffer_queue_limit 32
       <buffer>
         @type file
         path /var/log/fluentd-buffers/kubernetes.system.buffer
