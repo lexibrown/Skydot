@@ -64,7 +64,7 @@ spec:
           path: /tmp/fluentd
       - name: minikubemount
         hostPath: 
-          path: /mnt/sda1/var/lib/docker/containers
+          path: /var/lib/docker/containers
       - name: config-volume
         configMap:
           name: fluentd-config
