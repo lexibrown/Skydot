@@ -420,23 +420,21 @@ data:
       @type elasticsearch
       @log_level info
       include_tag_key true
+      include_tag_key true
       host elasticsearch-logging
       port 9200
       logstash_format true
-      request_timeout 15s
-      logstash_prefix kubernetes-${record['kubernetes']['pod_name']}
-      buffer_queue_limit 32
-      <buffer>
-        @type file
-        path /var/log/fluentd-buffers/kubernetes.system.buffer
-        flush_mode interval
-        retry_type exponential_backoff
-        flush_thread_count 5
-        flush_interval 5s
-        retry_forever
-        retry_max_interval 30
-        chunk_limit_size 20M
-        queue_limit_length 8
-        overflow_action block
-      </buffer>
+      buffer_type memory
+      flush_interval 10
+      num_threads 4
+      queued_chunk_flush_interval 1
+      retry_limit 17
+      disable_retry_limit false
+      retry_wait 1.0
+      buffer_chunk_limit 4M
+      buffer_queue_limit 256
+      flush_at_shutdown true
+      request_timeout 60
+      reload_connections false
+      reload_on_failure true
     </match>
