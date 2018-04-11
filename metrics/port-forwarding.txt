@@ -1,0 +1,97 @@
+NAME                                               READY     STATUS    RESTARTS   AGE
+account-details-service-python-56645d5dd7-jff6w    1/1       Running   0          7m
+account-summary-service-python-5775744fd9-q89sb    1/1       Running   0          7m
+auth-app-5fc997ddc4-45drc                          1/1       Running   0          7m
+bill-payee-service-java-6d9d58d68f-gt9fz           1/1       Running   0          7m
+bill-payee-service-javascript-684f9799c7-fx2bj     1/1       Running   0          7m
+bill-payee-service-python-7dcd5695b5-8j94x         1/1       Running   0          7m
+bill-payment-service-cplus-7bc5f797b7-znqk5        1/1       Running   0          7m
+bill-payment-service-java-7dcd4db4c5-lfqml         1/1       Running   0          7m
+bill-payment-service-javascript-7d4c9fdcf5-9gvjd   1/1       Running   0          7m
+bill-payment-service-python-6b7dc79487-rcg4n       1/1       Running   0          7m
+create-service-cplus-f59d5559c-6vhxl               1/1       Running   0          7m
+create-service-python-6b97846645-r52vn             1/1       Running   0          7m
+delete-service-cplus-6fb4864764-dw89x              1/1       Running   0          7m
+delete-service-python-f477b58fd-q4dj6              1/1       Running   0          7m
+es-ds-8m6q8                                        1/1       Running   0          1d
+es-ds-gvmvk                                        1/1       Running   0          1d
+es-ds-h4xkx                                        1/1       Running   0          1d
+es-ds-r4dr5                                        1/1       Running   0          1d
+es-ds-r7ntw                                        1/1       Running   0          1d
+es-ds-tnskk                                        1/1       Running   0          1d
+host-gateway-5d79d9866c-fjj7s                      1/1       Running   0          7m
+jumpod                                             1/1       Running   71         8d
+mobile-app-8585dff574-9njpf                        1/1       Running   0          7m
+redis-7fcf4b6c4d-wd9k2                             1/1       Running   0          7m
+transfer-service-cplus-764855c7bd-zv9wp            1/1       Running   0          7m
+transfer-service-java-6f755464f8-7gslr             1/1       Running   0          7m
+transfer-service-javascript-68cb9d4b58-8sb2j       1/1       Running   0          7m
+transfer-service-python-5fc566586-qncrq            1/1       Running   0          7m
+transfer-service-spring-54b4cf7c9c-dqld6           1/1       Running   0          7m
+verify-service-cplus-6844747746-4lg9r              1/1       Running   0          7m
+verify-service-python-67867cc744-87r5q             1/1       Running   0          7m
+
+
+kubectl port-forward transfer-service-java-6f755464f8-9rl8c 8080:8080
+http://localhost:8080/transfer
+
+
+
+
+echo "account-details-service-python"
+http://localhost:8080/account/details
+kubectl port-forward account-details-service-python-56645d5dd7-jff6w 8080:80
+
+echo "account-summary-service-python"
+http://localhost:8080/account/summary
+kubectl port-forward account-summary-service-python-5775744fd9-q89sb 8080:80
+
+echo "auth-app"
+http://localhost:8080/auth/login
+kubectl port-forward auth-app-5fc997ddc4-45drc 8080:80
+
+http://localhost:8080/bill/payee/search
+kubectl port-forward bill-payee-service-java-6d9d58d68f-gt9fz 8080:8080
+kubectl port-forward bill-payee-service-javascript-684f9799c7-fx2bj 8080:80
+kubectl port-forward bill-payee-service-python-7dcd5695b5-8j94x 8080:80
+
+http://localhost:8080/bill/payee
+kubectl port-forward bill-payee-service-java-6d9d58d68f-gt9fz 8080:8080
+kubectl port-forward bill-payee-service-javascript-684f9799c7-fx2bj 8080:80
+kubectl port-forward bill-payee-service-python-7dcd5695b5-8j94x 8080:80
+
+http://localhost:8080/bill
+kubectl port-forward bill-payment-service-java-7dcd4db4c5-8h5vr 8080:8080
+kubectl port-forward bill-payment-service-javascript-7d4c9fdcf5-9gvjd 8080:80
+kubectl port-forward bill-payment-service-python-6b7dc79487-rcg4n 8080:80
+kubectl port-forward bill-payment-service-cplus-7bc5f797b7-znqk5 8080:80
+
+http://localhost:8080/create
+kubectl port-forward create-service-cplus-f59d5559c-6vhxl 8080:80
+kubectl port-forward create-service-python-6b97846645-r52vn 8080:80
+
+http://localhost:8080/delete
+kubectl port-forward delete-service-cplus-6fb4864764-dw89x 8080:80
+kubectl port-forward delete-service-python-f477b58fd-q4dj6 8080:80
+
+echo "host-gateway"
+http://localhost:8080/host
+kubectl port-forward host-gateway-5d79d9866c-fjj7s 8080:8080
+
+echo "mobile-app"
+http://localhost:8080/account
+kubectl port-forward mobile-app-8585dff574-9njpf 8080:8080
+
+http://localhost:8080/transfer
+kubectl port-forward transfer-service-java-6f755464f8-7gslr 8080:8080
+kubectl port-forward transfer-service-spring-54b4cf7c9c-dqld6 8080:8080
+kubectl port-forward transfer-service-javascript-68cb9d4b58-8sb2j 8080:80
+kubectl port-forward transfer-service-python-5fc566586-qncrq 8080:80
+kubectl port-forward transfer-service-cplus-764855c7bd-zv9wp 8080:80
+
+echo "verify-service-cplus"
+http://localhost:8080/auth
+kubectl port-forward verify-service-cplus-6844747746-4lg9r 8080:80
+kubectl port-forward verify-service-python-67867cc744-87r5q 8080:80
+
+SELECT sum("value") FROM "cpu/usage_rate" WHERE "type" = 'pod_container' AND "namespace_name" =~ /$namespace$/ AND "pod_name" =~ /$podname$/ AND $timeFilter GROUP BY time($interval), "container_name" fill(null)

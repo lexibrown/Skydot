@@ -1,0 +1,184 @@
+{
+	"id": "b7893bb9-90d4-4638-84f1-26e8473a3ff7",
+	"name": "Verify",
+	"allTests": [],
+	"timestamp": "2018-04-11T14:32:46.828Z",
+	"collection_id": "8c7b5995-799e-9bd2-bc94-97e5180dd25e",
+	"folder_id": "a9c31c43-f812-63fc-c7dc-f506d547a4bc",
+	"target_type": "folder",
+	"environment_id": "bafa08f5-66da-de5b-957b-a7bdb9cf04bb",
+	"data": [],
+	"delay": 0,
+	"count": 1,
+	"collection": {
+		"id": "8c7b5995-799e-9bd2-bc94-97e5180dd25e",
+		"name": "metric",
+		"description": "",
+		"auth": null,
+		"events": null,
+		"variables": null,
+		"order": [],
+		"folders_order": [
+			"a9c31c43-f812-63fc-c7dc-f506d547a4bc",
+			"05ba0078-0778-3f79-d243-391c99a72b75",
+			"4a6d115e-199e-530a-3c1b-8ba5209cdb35",
+			"0d6c2943-7330-c555-49c9-ce7a3961e2ff",
+			"392cb89b-aeac-86bc-ce1e-9007c04df59f",
+			"c96c2652-5f98-4fa0-975f-71872953c5ae",
+			"73164256-0e79-f172-8fd4-d80c6d47a575",
+			"cfe3079c-6c6e-466e-a96e-0d068b7d8612",
+			"015adafb-2426-697a-46a0-26f4757f5d35"
+		],
+		"owner": "4048826",
+		"permissions": {},
+		"favorite": false,
+		"shared": false,
+		"type": "collection",
+		"depth": 0
+	},
+	"folder": {
+		"id": "a9c31c43-f812-63fc-c7dc-f506d547a4bc",
+		"name": "Verify",
+		"description": "",
+		"auth": null,
+		"events": null,
+		"collection": "8c7b5995-799e-9bd2-bc94-97e5180dd25e",
+		"folder": null,
+		"order": [
+			"591fbd36-03f9-0f71-4ae4-7a9b560e262d",
+			"e3b05805-2524-ca8a-7905-801c53f86ee0"
+		],
+		"folders_order": [],
+		"type": "folder",
+		"depth": 1
+	},
+	"environment": null,
+	"globals": [],
+	"results": [
+		{
+			"name": "Setup",
+			"id": "591fbd36-03f9-0f71-4ae4-7a9b560e262d",
+			"url": "http://mobile-skydot.eastus.cloudapp.azure.com/user",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				"159"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "159",
+			"totalRequestTime": "159",
+			"iterationResults": {}
+		},
+		{
+			"name": "Auth",
+			"id": "e3b05805-2524-ca8a-7905-801c53f86ee0",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"161",
+				"202",
+				"106",
+				"120",
+				"112",
+				"113",
+				"107",
+				"110",
+				"109",
+				"106",
+				"188",
+				"108",
+				"111",
+				"113",
+				"99",
+				"106",
+				"105",
+				"106",
+				"111",
+				"133",
+				"101"
+			],
+			"allTests": [
+				{},
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			],
+			"time": "101",
+			"totalRequestTime": "16120210612011211310711010910618810811111399106105106111133101",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 0,
+	"totalFail": 0,
+	"totalTime": 2686,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "Setup",
+			"id": "591fbd36-03f9-0f71-4ae4-7a9b560e262d",
+			"url": "http://mobile-skydot.eastus.cloudapp.azure.com/user",
+			"time": "2018-04-11T14:32:46.828Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Auth",
+			"id": "e3b05805-2524-ca8a-7905-801c53f86ee0",
+			"url": "http://auth-skydot.eastus.cloudapp.azure.com/auth/login",
+			"time": "101",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		}
+	],
+	"synced": false
+}
