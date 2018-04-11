@@ -12,6 +12,11 @@ cache = redis.Redis(host='redis', port=6379)
 delimiter = '\\';
 key = "this is the secret key"
 
+def log(output):
+	now = time.time()
+	st_now = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S.%f')
+	logging.debug(st_now + " " + output)
+
 def encrypt(plaintext):
 	cipher = XOR.new(key)
 	return base64.b64encode(cipher.encrypt(plaintext))
@@ -27,7 +32,7 @@ def invalid(error=None):
 			'error': 'AUTH-1000',
 			'message': 'Invalid request'
 	}
-	logging.debug("RESPONSE: " + str(message))
+	log("[RESPONSE] " + str(message))
 	
 	resp = jsonify(message)
 	resp.status_code = 400
@@ -41,7 +46,7 @@ def unauthorized(error=None):
 			'message': 'Token is invalid',
 			'token': 'INVALID'
 	}
-	logging.debug("RESPONSE: " + str(message))
+	log("[RESPONSE] " + str(message))
 	
 	resp = jsonify(message)
 	resp.status_code = 401
@@ -55,7 +60,7 @@ def timeout(error=None):
 			'message': 'Token has expired',
 			'token': 'EXPIRED'
 	}
-	logging.debug("RESPONSE: " + str(message))
+	log("[RESPONSE] " + str(message))
 	
 	resp = jsonify(message)
 	resp.status_code = 408
@@ -68,7 +73,7 @@ def crash(error=None):
 			'error': 'AUTH-5000',
 			'message': 'Something went wrong. Please try again.'
 	}
-	logging.debug("RESPONSE: " + str(message))
+	log("[RESPONSE] " + str(message))
 
 	resp = jsonify(message)
 	resp.status_code = 500
@@ -80,7 +85,7 @@ def login():
 		abort(400)
 	content = request.get_json()
 
-	logging.debug("REQUEST: " + str(content))
+	log("[REQUEST] " + str(content))
 	
 	if 'user_id' not in content:
 		abort(400)
@@ -95,7 +100,7 @@ def login():
 		response = requests.post(url = url, json = content)
 		js = json.dumps(response.json())
 
-		logging.debug("VERIFY RESPONSE: " + str(js))
+		log("[VERIFY RESPONSE] " + str(js))
 		
 		if 'error' in js:
 			return Response(js, status = 401, mimetype = 'application/json')
@@ -103,7 +108,7 @@ def login():
 		ts = (time.time())
 		st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
-		logging.debug("ts: " + st)
+		log("ts: " + st)
 		token = encrypt(content['user_id'] + delimiter + content['password'] + delimiter + str(ts))
 		
 		cache.set(content['user_id'], token)
@@ -113,7 +118,7 @@ def login():
 		}
 		js = json.dumps(data)
 			
-		logging.debug("RESPONSE: " + str(js))
+		log("[RESPONSE] " + str(js))
 			
 		return Response(js, status = 200, mimetype = 'application/json')
 	except:
@@ -125,7 +130,7 @@ def logout():
 		abort(400)
 	content = request.get_json()
 
-	logging.debug("REQUEST: " + str(content))
+	log("[REQUEST] " + str(content))
 	
 	if 'token' not in content:
 		abort(400)
@@ -146,7 +151,7 @@ def logout():
 		}
 		js = json.dumps(data)
 		
-		logging.debug("RESPONSE: " + str(js))
+		log("[RESPONSE] " + str(js))
 			
 		return Response(js, status = 200, mimetype = 'application/json')
 	except:
@@ -158,7 +163,7 @@ def verify():
 		abort(400)
 	content = request.get_json()
 
-	logging.debug("REQUEST: " + str(content))
+	logg("[REQUEST] " + str(content))
 	
 	if 'token' not in content:
 		abort(400)
@@ -179,10 +184,10 @@ def verify():
 		elapsed = now - then
 
 		st_now = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
-		logging.debug("Now: " + st_now)
+		log("Now: " + st_now)
 		st_then = datetime.datetime.fromtimestamp(then).strftime('%Y-%m-%d %H:%M:%S')
-		logging.debug("Then: " + st_then)
-		logging.debug("Diff: " + str(elapsed))
+		log("Then: " + st_then)
+		log("Diff: " + str(elapsed))
 
 		m = int(elapsed) / 60
 	except:
@@ -201,7 +206,7 @@ def verify():
 		}
 		js = json.dumps(data)
 		
-		logging.debug("RESPONSE: " + str(js))
+		log("[RESPONSE] " + str(js))
 		
 		return Response(js, status = 200, mimetype = 'application/json')
 	except:
@@ -213,7 +218,7 @@ def user():
 		abort(400)
 	content = request.get_json()
 
-	logging.debug("REQUEST: " + str(content))
+	log("[REQUEST] " + str(content))
 	
 	if 'token' not in content:
 		abort(400)
@@ -226,7 +231,7 @@ def user():
 		}
 		js = json.dumps(data)
 
-		logging.debug("RESPONSE: " + str(js))
+		log("[RESPONSE] " + str(js))
 		
 		return Response(js, status = 200, mimetype = 'application/json')
 	except:

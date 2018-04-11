@@ -5,6 +5,11 @@ logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 app = Flask(__name__)
 
+def log(output):
+	now = time.time()
+	st_now = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S.%f')
+	logging.debug(st_now + " " + output)
+
 @app.errorhandler(400)
 def invalid(error=None):
 	message = {
@@ -12,7 +17,7 @@ def invalid(error=None):
 			'error': 'CRT-1000',
 			'message': 'Invalid request'
 	}
-	logging.debug("RESPONSE: " + str(message))
+	log("[RESPONSE] " + str(message))
 	
 	resp = jsonify(message)
 	resp.status_code = 400
@@ -25,7 +30,7 @@ def crash(error=None):
 			'error': 'CRT-5000',
 			'message': 'Something went wrong. Please try again.'
 	}
-	logging.debug("RESPONSE: " + str(message))
+	log("[RESPONSE] " + str(message))
 
 	resp = jsonify(message)
 	resp.status_code = 500
@@ -37,7 +42,7 @@ def create():
 		abort(400)
 	content = request.get_json()
 	
-	logging.debug("REQUEST: " + str(content))
+	log("[REQUEST] " + str(content))
 	
 	if 'user_id' not in content:
 		abort(400)
@@ -51,7 +56,7 @@ def create():
 		response = requests.post(url = url, json = content)
 		js = json.dumps(response.json())
 
-		logging.debug("RESPONSE: " + str(js))
+		log("[RESPONSE] " + str(js))
 		
 		if 'error' in js:
 			return Response(js, status = 401, mimetype = 'application/json')
