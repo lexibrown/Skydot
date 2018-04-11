@@ -21,6 +21,7 @@ import java.util.Map;
 @Slf4j
 @Component
 public class TransferClient {
+	
     private ObjectMapper mapper = new ObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -62,7 +63,7 @@ public class TransferClient {
             log.error("Calling transfer service failed!", e);
             response.setStatus(400);
             response.setMessage("Failure: " + e.getMessage());
-        }
+		}
 
         return response;
     }
