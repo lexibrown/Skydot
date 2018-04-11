@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <time.h>
+#include <sys/time.h>
+#include <math.h>
 #include <string>
 #include <iostream>
 #include <map>
@@ -19,6 +23,39 @@ using namespace web::http::experimental::listener;
 
 #define TRACE(msg)            std::cout << msg;
 #define TRACE_ACTION(...) std::cout , __VA_ARGS__ , L"\n";
+#define __SHORT_FILE__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#define __LOG__(format, loglevel, ...) printf("%s %-5s [%s] [%s:%d] " format "\n", getFormattedTime(), loglevel, __func__, __SHORT_FILE__, __LINE__, ## __VA_ARGS__)
+
+#define LOGDEBUG(format, ...) __LOG__(format, "DEBUG", ## __VA_ARGS__)
+#define LOGWARN(format, ...) __LOG__(format, "WARN", ## __VA_ARGS__)
+#define LOGERROR(format, ...) __LOG__(format, "ERROR", ## __VA_ARGS__)
+#define LOGINFO(format, ...) __LOG__(format, "INFO", ## __VA_ARGS__)
+
+char* getFormattedTime(void) {
+  static char buffer[26];
+  int millisec;
+  struct tm* tm_info;
+  struct timeval tv;
+
+  gettimeofday(&tv, NULL);
+
+  millisec = lrint(tv.tv_usec / 1000.0); // Round to nearest millisec
+  if (millisec >= 1000) { // Allow for rounding up to nearest second
+    millisec -= 1000;
+    tv.tv_sec++;
+  }
+
+  tm_info = localtime(&tv.tv_sec);
+  
+  // Must be static, otherwise won't work
+  // static char _retval[20];
+  //strftime(_retval, sizeof(_retval), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+  strftime(buffer, 26, "%Y:%m:%d %H:%M:%S", tm_info);
+  printf("%s.%03d\n", buffer, millisec);
+
+  return buffer;
+}
 
 void display_json(
    json::value const & jvalue,
@@ -94,7 +131,7 @@ void handle_request(
 
 void handle_post(http_request request)
 {
-   TRACE("\nhandle POST\n");
+   LOGINFO("\nhandle POST\n");
 
    handle_request(
       request,
