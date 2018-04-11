@@ -1,0 +1,720 @@
+{
+	"info": {
+		"_postman_id": "af0751e6-7cba-460c-90ee-27c157ffaf95",
+		"name": "skydot-mobile",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Transfers",
+			"description": "",
+			"item": [
+				{
+					"name": "Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e4ef43e-bdcf-4f1c-96fe-a30b3901888e",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"var i = 1;",
+									"var accounts = jsonData.accounts;",
+									"var account1 = false;",
+									"var account2 = false;",
+									"Object.keys(accounts).forEach(function(key) {",
+									"    if (i < 3) {",
+									"        if (!account1 && accounts[key].type != \"Investing\") {",
+									"            postman.setEnvironmentVariable(\"account1\", JSON.stringify(accounts[key]));",
+									"            postman.setEnvironmentVariable(\"id1\", JSON.stringify(accounts[key].id));",
+									"            account1 = true;",
+									"            i++;",
+									"        } else {",
+									"            postman.setEnvironmentVariable(\"account2\", JSON.stringify(accounts[key]));",
+									"            postman.setEnvironmentVariable(\"id2\", JSON.stringify(accounts[key].id));",
+									"            account2 = true;",
+									"            i++;",
+									"        }",
+									"    }",
+									"});",
+									"postman.setEnvironmentVariable(\"accounts\", JSON.stringify(accounts));",
+									"postman.setEnvironmentVariable(\"count\", 20);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/account",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"account"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Transfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dd9f296f-c2b9-42cb-b747-0d49eecb3891",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"Transfer\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fd649e8e-2179-4d70-b933-51fea34e7558",
+								"type": "text/javascript",
+								"exec": [
+									"var m = 1.0 + Math.floor(Math.random() * 19);",
+									"postman.setEnvironmentVariable(\"amount\", m);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"from_account\": {{id1}},\n  \"to_account\": {{id2}},\n  \"amount\": {{amount}},\n  \"currency\": \"CAD\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/transfer",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"transfer"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVxUGEVXTUZQRBNZXU0=\",\n  \"from_account\": 1234,\n  \"to_account\": 4321,\n  \"amount\": 10.0,\n  \"currency\": \"CAD\"\n}"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3b2b5252-7ff8-41ac-93d5-2302b9e61053",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3962a675-50c2-44ff-b196-c5255044213c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/user",
+					"protocol": "http",
+					"host": [
+						"mobile-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/user/create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4cedf037-2ab3-464e-9e8b-1db185ea005b",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+				},
+				"url": {
+					"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/user/create",
+					"protocol": "http",
+					"host": [
+						"mobile-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"create"
+					]
+				},
+				"description": "{\n  \"user_id\" : \"\", \n  \"password\" : \"password\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "http://auth-skydot.eastus.cloudapp.azure.com:8080/auth/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ee874483-4621-41c5-a70a-66459e4e440a",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							"postman.setEnvironmentVariable(\"token\", jsonData.token);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+				},
+				"url": {
+					"raw": "http://auth-skydot.eastus.cloudapp.azure.com:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"auth-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				},
+				"description": "{\n  \"user_id\" : \"4500123412341234\", \n  \"password\" : \"password\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1d8ff4e8-dc45-47af-bd31-aeb04bba3c4d",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							"var i = 1;",
+							"var accounts = jsonData.accounts;",
+							"var account1 = false;",
+							"var account2 = false;",
+							"Object.keys(accounts).forEach(function(key) {",
+							"    if (i < 3) {",
+							"        if (!account1 && accounts[key].type != \"Investing\") {",
+							"            postman.setEnvironmentVariable(\"account1\", JSON.stringify(accounts[key]));",
+							"            postman.setEnvironmentVariable(\"id1\", JSON.stringify(accounts[key].id));",
+							"            account1 = true;",
+							"            i++;",
+							"        } else {",
+							"            postman.setEnvironmentVariable(\"account2\", JSON.stringify(accounts[key]));",
+							"            postman.setEnvironmentVariable(\"id2\", JSON.stringify(accounts[key].id));",
+							"            account2 = true;",
+							"            i++;",
+							"        }",
+							"    }",
+							"});",
+							"postman.setEnvironmentVariable(\"accounts\", JSON.stringify(accounts));",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"{{token}}\"\n}"
+				},
+				"url": {
+					"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/account",
+					"protocol": "http",
+					"host": [
+						"mobile-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"account"
+					]
+				},
+				"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "http://auth-skydot.eastus.cloudapp.azure.com:8080/auth/user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5b405f94-3355-437b-bc4c-76686707f1b0",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"{{token}}\"\n}"
+				},
+				"url": {
+					"raw": "http://auth-skydot.eastus.cloudapp.azure.com:8080/auth/user",
+					"protocol": "http",
+					"host": [
+						"auth-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"user"
+					]
+				},
+				"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/account/details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c21957ce-fdae-4039-9ca3-d91c8259b1d7",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"{{token}}\",\n    \"account_id\" : {{id1}}\n}"
+				},
+				"url": {
+					"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/account/details",
+					"protocol": "http",
+					"host": [
+						"mobile-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"account",
+						"details"
+					]
+				},
+				"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/user/delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c45166c-4739-4e57-923a-a73c1741164b",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+				},
+				"url": {
+					"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/user/delete",
+					"protocol": "http",
+					"host": [
+						"mobile-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"delete"
+					]
+				},
+				"description": "{\n  \"user_id\" : \"4500123412341234\", \n  \"password\" : \"password\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/transfer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ce058645-76e1-4234-90fc-0aa843d1c3ca",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2121e3ad-ca09-4a2b-8ee3-e2873feb1c9c",
+						"type": "text/javascript",
+						"exec": [
+							"var m = 1.0 + Math.floor(Math.random() * 19);",
+							"postman.setEnvironmentVariable(\"amount\", m);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"token\": \"{{token}}\",\n  \"from_account\": {{id1}},\n  \"to_account\": {{id2}},\n  \"amount\": {{amount}},\n  \"currency\": \"CAD\"\n}"
+				},
+				"url": {
+					"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/transfer",
+					"protocol": "http",
+					"host": [
+						"mobile-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"transfer"
+					]
+				},
+				"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVxUGEVXTUZQRBNZXU0=\",\n  \"from_account\": 1234,\n  \"to_account\": 4321,\n  \"amount\": 10.0,\n  \"currency\": \"CAD\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/bill",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "deb5143d-3c24-47ac-a878-68199107193e",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9d1eb3df-bc3a-4358-8be6-73426485383f",
+						"type": "text/javascript",
+						"exec": [
+							"var r = Math.floor(Math.random() * 749) + 1;",
+							"var m = 1.0 + Math.floor(Math.random() * 19);",
+							"postman.setEnvironmentVariable(\"payee\", r);",
+							"postman.setEnvironmentVariable(\"amount\", m);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"token\": \"{{token}}\",\n  \"from_account\":{{id1}},\n  \"payee\":{{payee}},\n  \"amount\":{{amount}},\n  \"currency\":\"CAD\"\n}"
+				},
+				"url": {
+					"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/bill",
+					"protocol": "http",
+					"host": [
+						"mobile-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"bill"
+					]
+				},
+				"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVxWFkdQTUZXQxFaVkw=\",\n  \"from_account\":1234,\n  \"payee\":566,\n  \"amount\":5.0,\n  \"currency\":\"CAD\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/bill/payee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10eafb11-3ca8-476e-b9d6-4c67167fafa9",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"{{token}}\"\n}"
+				},
+				"url": {
+					"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/bill/payee",
+					"protocol": "http",
+					"host": [
+						"mobile-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"bill",
+						"payee"
+					]
+				},
+				"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVxRE0BTTUZdRRZeV04=\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/bill/payee/search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4c81bced-0249-4be9-956c-5e6e2898f722",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"{{token}}\",\n    \"search\": \"Carleton\"\n}"
+				},
+				"url": {
+					"raw": "http://mobile-skydot.eastus.cloudapp.azure.com:8080/bill/payee/search",
+					"protocol": "http",
+					"host": [
+						"mobile-skydot",
+						"eastus",
+						"cloudapp",
+						"azure",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"bill",
+						"payee",
+						"search"
+					]
+				},
+				"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVxRE0BTTUZdRRZeV04=\",\n    \"search\": \"york\"\n}"
+			},
+			"response": []
+		}
+	]
+}

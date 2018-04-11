@@ -66,6 +66,9 @@ kubectl exec jumpod -c shell -i -t -- curl -X POST http://transfer-service-pytho
 echo
 echo "transfer-service-cplus"
 kubectl exec jumpod -c shell -i -t -- curl -X POST http://transfer-service-cplus/transfer -d '{"token" : "100"}' -H "Content-Type: application/json"
+echo
+echo "transfer-service-spring"
+kubectl exec jumpod -c shell -i -t -- curl -X POST http://transfer-service-spring/transfer -d '{"token" : "100"}' -H "Content-Type: application/json"
 
 echo
 echo "verify-service-python"
