@@ -1,0 +1,1181 @@
+{
+	"info": {
+		"name": "metric",
+		"_postman_id": "8c7b5995-799e-9bd2-bc94-97e5180dd25e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Verify",
+			"description": "",
+			"item": [
+				{
+					"name": "Setup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"count\", 20);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/user",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"Auth\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://auth-skydot.eastus.cloudapp.azure.com/auth/login",
+							"protocol": "http",
+							"host": [
+								"auth-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account Summary",
+			"description": "",
+			"item": [
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"count\", 20);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://auth-skydot.eastus.cloudapp.azure.com/auth/login",
+							"protocol": "http",
+							"host": [
+								"auth-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"Account\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/account",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"account"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account Details",
+			"description": "",
+			"item": [
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"count\", 20);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://auth-skydot.eastus.cloudapp.azure.com/auth/login",
+							"protocol": "http",
+							"host": [
+								"auth-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "04b9b62d-92bf-40a7-a358-91ee5b536250",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"var i = 1;",
+									"var accounts = jsonData.accounts;",
+									"var account1 = false;",
+									"var account2 = false;",
+									"Object.keys(accounts).forEach(function(key) {",
+									"    if (i < 3) {",
+									"        if (!account1 && accounts[key].type != \"Investing\") {",
+									"            postman.setEnvironmentVariable(\"account1\", JSON.stringify(accounts[key]));",
+									"            postman.setEnvironmentVariable(\"id1\", JSON.stringify(accounts[key].id));",
+									"            account1 = true;",
+									"            i++;",
+									"        } else {",
+									"            postman.setEnvironmentVariable(\"account2\", JSON.stringify(accounts[key]));",
+									"            postman.setEnvironmentVariable(\"id2\", JSON.stringify(accounts[key].id));",
+									"            account2 = true;",
+									"            i++;",
+									"        }",
+									"    }",
+									"});",
+									"postman.setEnvironmentVariable(\"accounts\", JSON.stringify(accounts));",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/account",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"account"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "AccountDetails",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"AccountDetails\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{token}}\",\n    \"account_id\" : {{id1}}\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/account/details",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"account",
+								"details"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create",
+			"description": "",
+			"item": [
+				{
+					"name": "Setup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"count\", 20);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/user",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"Create\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/user/create",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"user",
+								"create"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete",
+			"description": "",
+			"item": [
+				{
+					"name": "Setup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"count\", 20);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/user",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a9eeb52-3856-41d2-8221-b9870da3d0dc",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"Delete\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}0\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/user/delete",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"user",
+								"delete"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bill Payment",
+			"description": "",
+			"item": [
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "96390d1d-8a51-4c69-942b-650bd672bede",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"count\", 20);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://auth-skydot.eastus.cloudapp.azure.com/auth/login",
+							"protocol": "http",
+							"host": [
+								"auth-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7445f8de-ce55-417d-bfa2-037a6667d979",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"var i = 1;",
+									"var accounts = jsonData.accounts;",
+									"var account1 = false;",
+									"var account2 = false;",
+									"Object.keys(accounts).forEach(function(key) {",
+									"    if (i < 3) {",
+									"        if (!account1 && accounts[key].type != \"Investing\") {",
+									"            postman.setEnvironmentVariable(\"account1\", JSON.stringify(accounts[key]));",
+									"            postman.setEnvironmentVariable(\"id1\", JSON.stringify(accounts[key].id));",
+									"            account1 = true;",
+									"            i++;",
+									"        } else {",
+									"            postman.setEnvironmentVariable(\"account2\", JSON.stringify(accounts[key]));",
+									"            postman.setEnvironmentVariable(\"id2\", JSON.stringify(accounts[key].id));",
+									"            account2 = true;",
+									"            i++;",
+									"        }",
+									"    }",
+									"});",
+									"postman.setEnvironmentVariable(\"accounts\", JSON.stringify(accounts));",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/account",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"account"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "BillPayment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb48a9ad-b483-4735-a11a-de63f8d336d1",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"BillPayment\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "34208ccf-916a-4f6b-b34d-0f2aae7a3aaa",
+								"type": "text/javascript",
+								"exec": [
+									"var r = Math.floor(Math.random() * 749) + 1;",
+									"var m = 1.0 + Math.floor(Math.random() * 9);",
+									"postman.setEnvironmentVariable(\"payee\", r);",
+									"postman.setEnvironmentVariable(\"amount\", m);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"from_account\":{{id1}},\n  \"payee\":{{payee}},\n  \"amount\":{{amount}},\n  \"currency\":\"CAD\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/bill",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"bill"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bill Payee",
+			"description": "",
+			"item": [
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "96390d1d-8a51-4c69-942b-650bd672bede",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"count\", 20);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://auth-skydot.eastus.cloudapp.azure.com/auth/login",
+							"protocol": "http",
+							"host": [
+								"auth-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "BillPayee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0831371c-8768-4fcc-893a-8412815bf434",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"BillPayee\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/bill/payee",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"bill",
+								"payee"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bill Payee Search",
+			"description": "",
+			"item": [
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "96390d1d-8a51-4c69-942b-650bd672bede",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"count\", 20);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://auth-skydot.eastus.cloudapp.azure.com/auth/login",
+							"protocol": "http",
+							"host": [
+								"auth-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "BillPayeeSearch",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4f5d7381-0363-4c94-bea7-35fba35c3b34",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"BillPayeeSearch\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{token}}\",\n    \"search\": \"Carleton\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/bill/payee/search",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"bill",
+								"payee",
+								"search"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transfer",
+			"description": "",
+			"item": [
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "96390d1d-8a51-4c69-942b-650bd672bede",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"count\", 20);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"{{user_id}}\", \n  \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "http://auth-skydot.eastus.cloudapp.azure.com/auth/login",
+							"protocol": "http",
+							"host": [
+								"auth-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d2b46c4e-2812-46ce-82b5-d58167eb8a1d",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"var i = 1;",
+									"var accounts = jsonData.accounts;",
+									"var account1 = false;",
+									"var account2 = false;",
+									"Object.keys(accounts).forEach(function(key) {",
+									"    if (i < 3) {",
+									"        if (!account1 && accounts[key].type != \"Investing\") {",
+									"            postman.setEnvironmentVariable(\"account1\", JSON.stringify(accounts[key]));",
+									"            postman.setEnvironmentVariable(\"id1\", JSON.stringify(accounts[key].id));",
+									"            account1 = true;",
+									"            i++;",
+									"        } else {",
+									"            postman.setEnvironmentVariable(\"account2\", JSON.stringify(accounts[key]));",
+									"            postman.setEnvironmentVariable(\"id2\", JSON.stringify(accounts[key].id));",
+									"            account2 = true;",
+									"            i++;",
+									"        }",
+									"    }",
+									"});",
+									"postman.setEnvironmentVariable(\"accounts\", JSON.stringify(accounts));",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/account",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"account"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVpTFEdWTUJWRRRSVUo=\"\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Transfer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a4b800f7-6cb9-440b-ba02-1a59c972d006",
+								"type": "text/javascript",
+								"exec": [
+									"var m = 1.0 + Math.floor(Math.random() * 9);",
+									"postman.setEnvironmentVariable(\"amount\", m);",
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "5a1dfe8e-e0fe-4184-95d6-2b1ae9f0dd04",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"status\", jsonData.status);",
+									"",
+									"if (environment.count > 0) {",
+									"    postman.setEnvironmentVariable(\"count\", --environment.count);",
+									"    postman.setNextRequest(\"Transfer\");",
+									"} else {",
+									"    postman.setNextRequest(null);",
+									"}",
+									"console.log(environment.count);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"from_account\": {{id1}},\n  \"to_account\": {{id2}},\n  \"amount\": {{amount}},\n  \"currency\": \"CAD\"\n}"
+						},
+						"url": {
+							"raw": "http://mobile-skydot.eastus.cloudapp.azure.com/transfer",
+							"protocol": "http",
+							"host": [
+								"mobile-skydot",
+								"eastus",
+								"cloudapp",
+								"azure",
+								"com"
+							],
+							"path": [
+								"transfer"
+							]
+						},
+						"description": "{\n    \"token\": \"QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQVxUGEVXTUZQRBNZXU0=\",\n  \"from_account\": 1234,\n  \"to_account\": 4321,\n  \"amount\": 10.0,\n  \"currency\": \"CAD\"\n}"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
