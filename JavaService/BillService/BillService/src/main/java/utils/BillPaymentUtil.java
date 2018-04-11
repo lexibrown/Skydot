@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 public class BillPaymentUtil {
 
 	public static final String BASE_URL = "http://host-gateway";
-	public static final String PATH = "/host/bill/payee";
+	public static final String PATH = "/host/bill";
 
 	public static Map<String, Object> submitPayment(String userId, int fromId, int payee, double amount, String currency)
 			throws Exception {
