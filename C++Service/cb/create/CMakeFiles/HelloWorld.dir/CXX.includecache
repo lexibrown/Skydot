@@ -7,6 +7,14 @@
 #IncludeRegexTransform: 
 
 /cb/create/HelloWorld.cpp
+stdio.h
+-
+time.h
+-
+sys/time.h
+-
+math.h
+-
 string
 -
 iostream

@@ -31,8 +31,10 @@ using namespace web::http::experimental::listener;
 #define LOGERROR(format, ...) __LOG__(format, "ERROR", ## __VA_ARGS__)
 #define LOGINFO(format, ...) __LOG__(format, "INFO", ## __VA_ARGS__)
 
-char* getFormattedTime(void) {
-  static char buffer[26];
+char* getFormattedTime(void) 
+{
+  // Must be static, otherwise won't work
+  static char buffer[64];
   int millisec;
   struct tm* tm_info;
   struct timeval tv;
@@ -47,21 +49,29 @@ char* getFormattedTime(void) {
 
   tm_info = localtime(&tv.tv_sec);
   
-  // Must be static, otherwise won't work
-  // static char _retval[20];
-  //strftime(_retval, sizeof(_retval), "%Y-%m-%d %H:%M:%S", timeinfo);
+  strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S.", tm_info);
 
-  strftime(buffer, 26, "%Y:%m:%d %H:%M:%S", tm_info);
-  printf("%s.%03d\n", buffer, millisec);
+  char millisec_str[32];
+  sprintf(millisec_str, "%03d", millisec);
+  strcat(buffer, millisec_str);
 
   return buffer;
 }
+
+// void display_json(
+//    json::value const & jvalue,
+//    utility::string_t const & prefix)
+// {
+//    std::cout << prefix << jvalue.serialize() << endl;
+// }
 
 void display_json(
    json::value const & jvalue,
    utility::string_t const & prefix)
 {
-   std::cout << prefix << jvalue.serialize() << endl;
+   std::string str_json = jvalue.serialize();
+   const char* json = str_json.c_str();
+   LOGINFO("%s %s", prefix.c_str(), json);
 }
 
 void handle_request(
@@ -76,7 +86,6 @@ void handle_request(
          try
          {
             auto const & jvalue = task.get();
-            display_json(jvalue, "R: ");
 
             if (!jvalue.is_null())
             {
@@ -90,35 +99,42 @@ void handle_request(
       })
       .wait();
 
-   
-   display_json(answer, "S: ");
+   display_json(answer, "[REQUEST]");
 
    json::value json_return;
    http_client client("http://host-gateway/host/verify");
+   int crash = 0;
 
    http_response response = client.request(web::http::methods::POST, U("/"), answer)
         .then([](const web::http::http_response& response) {
             return response.extract_json(); 
         })
-        .then([&json_return](const pplx::task<web::json::value>& task) {
+        .then([&json_return, &request, &crash](const pplx::task<web::json::value>& task) {
             try {
                 json_return = task.get();
             }
             catch (const web::http::http_exception& e) {                    
                 std::cout << "error " << e.what() << std::endl;
+                json::value error_return;
+                error_return["error"] = json::value::string("AUTH-5000");
+                error_return["message"] = json::value::string("Something went wrong. Please try again.");
+                display_json(error_return, "[RESPONSE]");
+                request.reply(status_codes::InternalError, error_return);
+                crash = 1;
             }
         })
         .wait();
 
+   if (crash == 1) {
+    return;
+   }
 
-   std::cout << json_return.serialize() << std::endl;
+   display_json(json_return, "[RESPONSE]");
+
    for (auto const & e : json_return.as_object())
    {
       auto key = e.first;
       auto value = e.second;
-      std::cout << key << std::endl;
-      std::cout << value << std::endl;
-      std::cout << key.compare("error") << std::endl;
 
       if (key.compare("error") == 0)
       {
@@ -131,7 +147,7 @@ void handle_request(
 
 void handle_post(http_request request)
 {
-   LOGINFO("\nhandle POST\n");
+   LOGINFO("handle POST");
 
    handle_request(
       request,
