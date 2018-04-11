@@ -1,0 +1,144 @@
+{
+	"id": "086d5e25-f936-4472-aa79-39e404b1445e",
+	"name": "BillPayeeSearch",
+	"allTests": [],
+	"timestamp": "2018-04-11T17:20:30.278Z",
+	"collection_id": "76402a0d-b989-46b6-9cc3-24b4b4cb861f",
+	"folder_id": "c8a1d6f5-a5a1-4e6f-9007-e861f22ae309",
+	"target_type": "folder",
+	"environment_id": "0",
+	"data": [],
+	"delay": 0,
+	"count": 20,
+	"collection": {
+		"id": "76402a0d-b989-46b6-9cc3-24b4b4cb861f",
+		"name": "metric2",
+		"description": "",
+		"auth": null,
+		"events": null,
+		"variables": [],
+		"order": [],
+		"folders_order": [
+			"ad3db22c-0bd9-44c1-b654-e9152b31bffe",
+			"afd61d96-9792-4835-be29-c82385ea6787",
+			"cd410f8a-ba81-44a2-9c86-13fe8ae60254",
+			"c8a1d6f5-a5a1-4e6f-9007-e861f22ae309",
+			"8be83a5b-6248-44ee-b6d9-b6e1007d0929",
+			"16a81fc1-3a60-4ab2-8ebf-c101c5fe12b1",
+			"f644d1e9-d47f-4d90-a498-f90d88b4dc50",
+			"fad621d5-3998-4d5c-90e0-16649eb69902",
+			"3bc119e5-bbd2-4362-af21-b1af7bc85b8f",
+			"b3ba8498-786b-4a4a-b5e6-0aee8bd3af72",
+			"1895513b-7807-4b9b-be0f-62c44f403ec2",
+			"a4ab8457-81de-4032-8516-75e8c5a0856f"
+		],
+		"owner": "4048826",
+		"permissions": {},
+		"favorite": false,
+		"shared": false,
+		"type": "collection",
+		"depth": 0
+	},
+	"folder": {
+		"id": "c8a1d6f5-a5a1-4e6f-9007-e861f22ae309",
+		"name": "BillPayeeSearch",
+		"description": "",
+		"auth": null,
+		"events": null,
+		"collection": "76402a0d-b989-46b6-9cc3-24b4b4cb861f",
+		"folder": null,
+		"order": [
+			"07a9ac20-423f-484e-a898-aedbfee9a928"
+		],
+		"folders_order": [],
+		"type": "folder",
+		"depth": 1
+	},
+	"environment": null,
+	"globals": [],
+	"results": [
+		{
+			"name": "/bill/payee/search",
+			"id": "07a9ac20-423f-484e-a898-aedbfee9a928",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"465",
+				"414",
+				"417",
+				"410",
+				"490",
+				"483",
+				"443",
+				"478",
+				"367",
+				"562",
+				"425",
+				"399",
+				"454",
+				"500",
+				"352",
+				"479",
+				"532",
+				"877",
+				"491",
+				"545"
+			],
+			"allTests": [
+				{},
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			],
+			"time": "545",
+			"totalRequestTime": "465414417410490483443478367562425399454500352479532877491545",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 0,
+	"totalFail": 0,
+	"totalTime": 9583,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "/bill/payee/search",
+			"id": "07a9ac20-423f-484e-a898-aedbfee9a928",
+			"url": "http://localhost:8080/bill/payee/search",
+			"time": "545",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		}
+	],
+	"synced": false
+}
