@@ -1,0 +1,680 @@
+{
+	"info": {
+		"name": "metric2",
+		"_postman_id": "76402a0d-b989-46b6-9cc3-24b4b4cb861f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AccountDetails",
+			"description": "",
+			"item": [
+				{
+					"name": "/account/details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\",\n  \"account_id\" : 2489\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/account/details",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"details"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AccountSummary",
+			"description": "",
+			"item": [
+				{
+					"name": "/account/summary",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/account/summary",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"summary"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AuthApp",
+			"description": "",
+			"item": [
+				{
+					"name": "/auth/login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\",\n  \"password\" : \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BillPayeeSearch",
+			"description": "",
+			"item": [
+				{
+					"name": "/bill/payee/search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"search\" : \"york\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/bill/payee/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bill",
+								"payee",
+								"search"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BillPayee",
+			"description": "",
+			"item": [
+				{
+					"name": "/bill/payee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/bill/payee",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bill",
+								"payee"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BillPayment",
+			"description": "",
+			"item": [
+				{
+					"name": "/bill",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\",\n  \"from_account\":2489,\n  \"payee\":566,\n  \"amount\":2.0,\n  \"currency\":\"CAD\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/bill",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bill"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create",
+			"description": "",
+			"item": [
+				{
+					"name": "/create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\",\n  \"password\" : \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"create"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete",
+			"description": "",
+			"item": [
+				{
+					"name": "/delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"45001234\",\n  \"password\" : \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"delete"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Host",
+			"description": "",
+			"item": [
+				{
+					"name": "/{user_id}/{account_id}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/host/4500123412341234/2489",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"host",
+								"4500123412341234",
+								"2489"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/{user_id}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/host/4500123412341234",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"host",
+								"4500123412341234"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/bill/payee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"search\" : \"york\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/host/bill/payee",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"host",
+								"bill",
+								"payee"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/bill/payee",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/host/bill/payee",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"host",
+								"bill",
+								"payee"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/bill",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\",\n  \"from_account\":2489,\n  \"payee\":566,\n  \"amount\":2.0,\n  \"currency\":\"CAD\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/host/bill",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"host",
+								"bill"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\",\n  \"password\" : \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/host/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"host",
+								"create"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"45001234\",\n  \"password\" : \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/host/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"host",
+								"delete"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/transfer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user_id\":\"4500123412341234\",\n\t\"from_account\":2486,\n\t\"to_account\":2489,\n\t\"amount\":3.0,\n\t\"currency\":\"CAD\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/host/transfer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"host",
+								"transfer"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/verify",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\",\n  \"password\" : \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/host/verify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"host",
+								"verify"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MobileApp",
+			"description": "",
+			"item": [
+				{
+					"name": "/account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\",\n  \"password\" : \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"delete"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transfer",
+			"description": "",
+			"item": [
+				{
+					"name": "/transfer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user_id\":\"4500123412341234\",\n\t\"from_account\":2486,\n\t\"to_account\":2489,\n\t\"amount\":3.0,\n\t\"currency\":\"CAD\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/transfer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"transfer"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Verify",
+			"description": "",
+			"item": [
+				{
+					"name": "/auth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\" : \"4500123412341234\",\n  \"password\" : \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
