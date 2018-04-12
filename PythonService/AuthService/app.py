@@ -163,7 +163,7 @@ def verify():
 		abort(400)
 	content = request.get_json()
 
-	logg("[REQUEST] " + str(content))
+	log("[REQUEST] " + str(content))
 	
 	if 'token' not in content:
 		abort(400)
