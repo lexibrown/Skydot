@@ -4,7 +4,7 @@ skydot
 12/31/2299
 DqbSg8k8Rxt+4kIWafe3q5Xw0HunxvMDeJ4xw1k6lcw=
 
-az aks get-credentials --resource-group skydot --name skydot
+az aks get-credentials --resource-group skydot-cluster --name skydot
 kubectl get nodes
 
 kubectl label nodes aks-agentpool-27077534-0 micro=app
@@ -12,8 +12,23 @@ kubectl label nodes aks-agentpool-27077534-1 lang=python
 kubectl label nodes aks-agentpool-27077534-2 lang=cplus
 kubectl label nodes aks-agentpool-27077534-3 lang=javascript
 kubectl label nodes aks-agentpool-27077534-4 lang=java
+kubectl label nodes aks-agentpool-27077534-5 gateway=host
 
+kubectl label nodes aks-agentpool-27077534-0 beta.kubernetes.io/fluentd-ds-ready=false
+kubectl label nodes aks-agentpool-27077534-1 beta.kubernetes.io/fluentd-ds-ready=true
+kubectl label nodes aks-agentpool-27077534-2 beta.kubernetes.io/fluentd-ds-ready=true
+kubectl label nodes aks-agentpool-27077534-3 beta.kubernetes.io/fluentd-ds-ready=true
+kubectl label nodes aks-agentpool-27077534-4 beta.kubernetes.io/fluentd-ds-ready=true
+kubectl label nodes aks-agentpool-27077534-5 beta.kubernetes.io/fluentd-ds-ready=false
+
+
+ 
 kubectl get nodes --show-labels
+
+kubectl apply -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/balance.yaml
+
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/host-gateway.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/transfer-service-spring.yaml
 
 kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/jumpod.yaml
 
@@ -41,12 +56,86 @@ kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML
 kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/verify-service-cplus.yaml
 kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/YAML/verify-service-python.yaml
 
+
+
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/kubernetes_config/es-controller.yaml
+kubectl apply -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/kubernetes_config/kibana-controller.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/kubernetes_config/es-service.yaml
+kubectl apply -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/kubernetes_config/kibana-service.yaml
+
+kubectl create configmap fluentd-config --from-file=td-agent.conf --namespace=kube-system
+kubectl create configmap fluentd-config --from-file=https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/kubernetes_config/fluentd_config/td-agent.conf --namespace=kube-system
+
+kubectl apply -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/kubernetes_config/fluentd-daemonset.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/kubernetes_config/structured_logger.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/kubernetes_config/normal_logger.yaml
+
+kubectl --namespace=kube-system get pods
+
+
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/fluentd-elasticsearch/es-statefulset.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/fluentd-elasticsearch/es-service.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/fluentd-elasticsearch/fluentd-es-configmap.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/fluentd-elasticsearch/fluentd-es-ds.yaml
+
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/fluentd-elasticsearch/kibana-deployment.yaml
+kubectl create -f https://raw.githubusercontent.com/lexibrown/Skydot/master/logging/fluentd-elasticsearch/kibana-service.yaml
+
+kubectl exec jumpod -c shell -i -t -- curl -X POST http://elasticsearch-logging:9200
+kubectl exec jumpod -c shell -i -t -- ping elasticsearch-logging.kube-system.svc.cluster.local
+
 kubectl get pods -o wide
 
 
 kubectl exec jumpod -c shell -i -t -- ping <TODO>.default.svc.cluster.local
 kubectl exec jumpod -c shell -i -t -- curl -X POST http://<TODO>:8080
 
+
+kubectl exec jumpod -c shell -i -t -- curl -X POST http://auth-app/auth/login
+
+kubectl exec jumpod -c shell -i -t -- curl http://host-gateway/host
+kubectl exec jumpod -c shell -i -t -- curl http://host-gateway/host/4500123412341234
+
 kubectl exec jumpod -c shell -i -t -- curl -X POST http://verify-service-python:8080/auth
+kubectl exec jumpod -c shell -i -t -- curl -X POST http://account-details-service-python:8080/account/details
 
 
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://auth-app:8080/auth/verify -d '{"token" : "QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQlxVEEpVTUdTQRNcVg=="}'
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://auth-app:8080/auth/user -d '{"token" : "QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQlxVEEpVTUdTQRNcVg=="}'
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://auth-app-2:8080/auth/user -d '{"token" : "QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQlxVEEpVTUdTQRNcVg=="}'
+
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://auth-app:8080/auth/login -d '{"user_id" : "4500123412341234", "password" : "password"}'
+
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://account-details-service-python:8080/account/details -d '{"user_id" : "4500123412341234", "account_id" : 2489}'
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://create-service-cplus:8080/create -d '{"user_id" : "4500123412341234", "password" : "password"}'
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://transfer-service-java:8080/transfer -d '{"user_id" : "4500123412341234", "from_account" : 9079, "to_account" : 99999, "amount" : 20, "currency" : "CAD"}'
+
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://bill-payment-service-javascript:8080/bill -d '{"user_id" : "4500123412341234", "from_account" : 1234, "payee" : 566, "amount" : 20, "currency" : "CAD"}'
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://bill-payee-service-javascript:8080/bill/payee
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://bill-payee-service-javascript:8080/bill/payee/search -d '{"search" : "carleton"}'
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://bill-payee-service-java:8080/bill/payee
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://bill-payee-service-java:8080/bill/payee/search -d '{"search" : "carleton"}'
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://mobile-app:8080/bill/payee/search -d '{"token" : "QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQ1hVEkJTTUBdQhZcXQ==", "search" : "carleton"}'
+
+kubectl exec jumpod -c shell -i -t -- curl -v -H "Content-Type: application/json" -X POST http://mobile-app/account -d '{"token" : "QF1ZQxFbQBRFWlYUQldQRjkEQRgWDhsaDS8RXEESQ1tUGERTTUVWRxlSUE0="}'
+
+
+
+-----skydot-logging
+logging
+controller username: sysadmin
+controller password: P@ssw0rd12345
+
+skydoy-logging: 6fc3c2fa-e708-4512-b226-502541ce8b82
+lKHeisl40DFk7cNGoIMWf9ZkzJZcqV7M7Le7p7A53+0=
+tenantID: e6887a5f-e73f-4201-9edd-ca1430486b94

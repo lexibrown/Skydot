@@ -7,7 +7,6 @@ ENTRYPOINT ["/app/HelloWorld"]
 ## - still trying to get rid of: apt-get -y install libboost-dev libcpprest
 ## - build and run...
 # docker build -t helloworld .
-# docker run -d -p 8080:8080 helloworld
-# curl -v -H "Content-Type: application/json" -X POST http://localhost/create -d '{"one" : "100", "two" : "200"}'
-# curl -H "Content-Type: application/json" -X POST http://localhost/create -d '{"userid":"4500123412341234","password":"password"}'
-# curl http://localhost:8088/restdemo
+# docker run -d -p 80:80 helloworld
+# curl -v -H "Content-Type: application/json" -X POST http://localhost/bill -d '{"one" : "100", "two" : "200"}'
+# curl -H "Content-Type: application/json" -X POST http://localhost/bill -d '{"user_id":"4500123412341234","payee":100}'
