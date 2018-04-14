@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: delete-service-cplus
+spec:
+  selector:
+    matchLabels:
+      app: delete-service-cplus
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: delete-service-cplus
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: delete-service-cplus
+          image: "lex13/delete-service-cplus"
+          ports:
+            - name: http
+              containerPort: 80
+      nodeSelector:
+        lang: cplus
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: delete-service-cplus
+spec:
+  selector:
+    app: delete-service-cplus
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http

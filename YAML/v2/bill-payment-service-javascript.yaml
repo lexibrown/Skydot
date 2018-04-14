@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: bill-payment-service-javascript
+spec:
+  selector:
+    matchLabels:
+      app: bill-payment-service-javascript
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bill-payment-service-javascript
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: bill-payment-service-javascript
+          image: "lex13/bill-payment-service-javascript"
+          ports:
+            - name: http
+              containerPort: 80
+      nodeSelector:
+        lang: javascript
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bill-payment-service-javascript
+spec:
+  selector:
+    app: bill-payment-service-javascript
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http

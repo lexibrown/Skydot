@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: create-service-cplus
+spec:
+  selector:
+    matchLabels:
+      app: create-service-cplus
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: create-service-cplus
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: create-service-cplus
+          image: "lex13/create-service-cplus"
+          ports:
+            - name: http
+              containerPort: 80
+      nodeSelector:
+        lang: cplus
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: create-service-cplus
+spec:
+  selector:
+    app: create-service-cplus
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http

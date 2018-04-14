@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: create-service-python
+spec:
+  selector:
+    matchLabels:
+      app: create-service-python
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: create-service-python
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: create-service-python
+          image: "lex13/create-service-python"
+          ports:
+            - name: http
+              containerPort: 80
+      nodeSelector:
+        lang: python
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: create-service-python
+spec:
+  selector:
+    app: create-service-python
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http

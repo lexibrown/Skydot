@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: bill-payee-service-javascript
+spec:
+  selector:
+    matchLabels:
+      app: bill-payee-service-javascript
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bill-payee-service-javascript
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: bill-payee-service-javascript
+          image: "lex13/bill-payee-service-javascript"
+          ports:
+            - name: http
+              containerPort: 80
+      nodeSelector:
+        lang: javascript
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bill-payee-service-javascript
+spec:
+  selector:
+    app: bill-payee-service-javascript
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http

@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: transfer-service-spring
+spec:
+  selector:
+    matchLabels:
+      app: transfer-service-spring
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: transfer-service-spring
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: transfer-service-spring
+          image: "lex13/transfer-service-spring"
+          ports:
+            - name: http
+              containerPort: 8080
+      nodeSelector:
+        lang: java
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: transfer-service-spring
+spec:
+  selector:
+    app: transfer-service-spring
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http
